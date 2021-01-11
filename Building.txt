@@ -1,0 +1,83 @@
+Building the source code.
+
+The source to the PS/2 interface is meant to be built from a command line 
+shell. This can be the native shell under Linux or MacOS, or something like 
+Sygwin under Windows. Windows Services for Linux may also work but I have not
+tested this.
+
+You will also need the AVR command line tools, these can be downloaded from 
+the Atmel / Microchip site for windows. The AVR-GCC toolchain is also available
+for most linux distributions and for Mac. It is also usefull to install the 
+AVRDude programming software. 
+
+My personal setup is the last version of WinAVR, updated with the command line 
+tools from Atmel / Microchip, and Cygwin under windows.
+
+Building the firmware :
+
+All examples assume you are building the atom firmware, you should substitute
+the firmware target you want to build, these are listed below.
+
+Open a shell prompt in the root directory, to build the firmware type :
+
+make TARGET=atom
+
+This will build the atom firmware and leave the compiled files in the atom folder.
+
+make TARGET=atom clean
+
+This will cleanup any compiled files, or intermediates.
+
+make TARGET=atom program
+
+This will build (if needed) the atom firmware and use AVRDude to attempt to program
+the target AVR. 
+
+
+
+
+For certain options you may need to edit the makefile, and change certain parameters
+of the build process. 
+
+The most important ones are :
+
+MCU = 
+
+The board can use any AVR that is pinout compatible with the atmega 16, this includes
+the atmega 16, 32, 164, 324, 664, 1284 (and pico power versions). The correct AVR needs
+to be specified here.
+
+AVRDUDE_PROGRAMMER =
+
+The type of programmer you are using (or the one your programmer emulates), the 
+documentation for your programmer should be consulted to find out what to use.
+
+AVRDUDE_PORT = 
+
+The name of the communtications port your programmer is connected to, see the 
+documentation for your programmer.
+
+You can also uncomment and set TARGET = in the Makefile in this case whatever you 
+specify here will be the default target when none is specified.
+
+All of these can also be specified on the command line e.g.
+
+make TARGET=atom MCU=atmega16 AVRDUDE_PROGRAMMER=avrispv2 AVRDUDE_PORT=com2:
+
+Will build the firmware for the atom, targeted at an ATmega16 chip, and will 
+attempt to program it by talking avrispv2 protocol on port COM2:
+
+
+
+Valid targets are:
+
+Target 			Machines
+atom			Acorn Atom.
+bbc				Acorn BBC A/B/B+ (requires additional hardware).
+bbcmaster		Acorn BBC Master / Master Compact.
+dragon_coco		Dragon 32/64/Alpha or Tandy CoCo 1/2/3.
+electron		Acorn electron.
+trs80			Tandy TRS80 model 3/4 (would require additional hardware for model 1).
+zx81			Sinclair ZX80/ZX81.
+zxspectrum		Sinclair ZX Spectrum 16/48/+/+128.
+

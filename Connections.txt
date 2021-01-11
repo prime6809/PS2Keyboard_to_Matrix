@@ -1,0 +1,447 @@
+Pinout of Board connectors 
+
+CNCOL07, target matrix columns, target reset.
+
+Pin #		Purpose
+1			Y0-COL0
+2			Y1-COL1
+3			Y2-COL2
+4			Y3-COL3
+5			Y4-COL4
+6			Y5-COL5
+7			Y6-COL6
+8			Y7-COL7
+9			Y8-COL8, AVR PD5
+10			Target reset, active low
+
+
+CNROW09, Target rows part 1
+
+Pin #		Purpose
+1			X0-ROW0
+2			X1-ROW1
+3			X2-ROW2
+4			X3-ROW3
+5			X4-ROW4
+6			X5-ROW5
+7			X12-ROW6
+8			X13-ROW7
+9			X6-ROW8
+10			X7-ROW9
+
+
+CNROWAF, Target rows part 2
+
+Pin #		Purpose
+1			X8-ROW10
+2			X9-ROW11
+3			X10-ROW12
+4			X11-ROW13
+5			X14-ROW14
+6			X15-ROW15
+7			AVR PB3
+8 			AVR PB4
+9			AVR PC5
+10			AVR PC6
+
+
+CN7, Joystick (not yet implemented).
+
+Pin #		Purpose
+1			JS-Up,		AVR PC0
+2			JS-Fire,	AVR PC4		
+3			JS-Down,	AVR PC1	
+4			N/C
+5			JS-Left,	AVR PC2
+6			GND
+7			JS-Right,	AVR PC3
+8			N/C
+9			N/C
+10			N/C
+
+
+CN2, 5V TTL level serial port, for debugging.
+
+1			+5V out
+2			Receive data
+3			Transmit data
+4			Ground
+
+
+CN1, PS/2 Keyboard input.
+
+1			Keyboard data
+2			N/C
+3			GND
+4			+5V to keyboard
+5			Keyboard clock
+6			N/C
+
+
+JP3, Spare AVR port B pins / Jumpers
+
+1			PB0	
+3			PB1	
+5			PB2
+7			PB3
+9			PB4
+
+All even pins GND
+
+JP2, Spare AVR Port C pins
+
+1			PC6
+2			PC5
+
+
+CN3, AVR ISP.
+
+1			MISO
+2			Voltage sense
+3			SCK
+4			MOSI
+5			/AVRRESET
+6			GND
+
+CN4, Power supply input.
+
+1			VCC, +5V
+2			GND
+
+
+
+Connections between PS2 interface and various targets.
+All assume that interface board is powered from target machine.
+
+===================[ Acorn Atom ]================================
+
+Y0-COL0		Keyboard end of R17 OR 	PB0 IC25-18
+Y1-COL1		Keyboard end of R18 OR 	PB1 IC25-19
+Y2-COL2		Keyboard end of R19 OR 	PB2 IC25-20	
+Y3-COL3		Keyboard end of R20 OR 	PB3 IC25-21
+Y4-COL4		Keyboard end of R21 OR 	PB4 IC25-22
+Y5-COL5		Keyboard end of R22 OR 	PB5 IC25-23
+Y6-COL6		Keyboard end of R23 OR 	PB6 IC25-24
+Y7-COL7		Keyboard end of R24 OR 	PB7 IC25-25
+Y8-COL8		Keyboard end of R25 OR 	PC6 IC25-11
+RESET		IC9-13 or trace connected to it.
+
+X0-ROW0		IC26-1 or trace connected to it.
+X1-ROW1		IC26-2 or trace connected to it.		
+X2-ROW2		IC26-3 or trace connected to it.
+X3-ROW3		IC26-4 or trace connected to it.
+X4-ROW4		IC26-5 or trace connected to it.
+X5-ROW5		IC26-6 or trace connected to it.
+X12-ROW6	IC26-7 or trace connected to it.
+X13-ROW7	IC26-9 or trace connected to it.
+X6-ROW8		IC26-10 or trace connected to it.
+X7-ROW9		IC26-11 or trace connected to it.
+
+X8-ROW10	Connect to GND, e.g. one of right hand pins of JP3
+X9-ROW11	N/C
+X10-ROW12	N/C
+X11-ROW13	N/C
+X14-ROW14	N/C
+X15-ROW15	N/C
+AVR PB3		N/C
+AVR PB4		N/C
+AVR PC5		N/C
+AVR PC6		N/C
+
+===================[ Acorn BBC Master ]================================
+
+Connections to PL-11 and PL24 on master motherboard.
+Can be powered from keyboard connector PL24, VCC=15, GND=14.
+
+Y0-COL0		PL11-3
+Y1-COL1		PL11-7
+Y2-COL2		PL11-6	
+Y3-COL3		PL24-7
+Y4-COL4		PL24-6
+Y5-COL5		PL24-5
+Y6-COL6		PL11-4
+Y7-COL7		PL11-5
+Y8-COL8		N/C
+RESET		PL24-13
+
+X0-ROW0		PL11-11
+X1-ROW1		PL24-4		
+X2-ROW2		PL11-12
+X3-ROW3		PL24-3
+X4-ROW4		PL11-14
+X5-ROW5		PL11-15
+X12-ROW6	PL11-10
+X13-ROW7	PL24-2
+X6-ROW8		PL24-13
+X7-ROW9		PL11-13
+
+X8-ROW10	PL11-9
+X9-ROW11	PL11-8
+X10-ROW12	PL11-10
+X11-ROW13	N/C
+X14-ROW14	N/C
+X15-ROW15	N/C
+AVR PB3		N/C
+AVR PB4		N/C
+AVR PC5		PL24-10
+AVR PC6		PL24-9
+
+The following connections also need to be made.
+This allows the keyboard interface to be powered direct from the 
+Master.
+Interface connector	Keyboard connector	
+GND					PL24-14		
+VCC (+5V in)		PL24-15
+
+A customized board is available in the hardware section.
+
+===================[ Acorn BBC Master Compact ]===========================
+
+Connections to 2x13 keyboard connector (labled keyboard).
+Pin 1 is to the right.
+
+Y0-COL0		Pin 19
+Y1-COL1		Pin 5
+Y2-COL2		Pin 15	
+Y3-COL3		Pin 3
+Y4-COL4		Pin 6
+Y5-COL5		Pin 8
+Y6-COL6		Pin 17
+Y7-COL7		Pin 20
+Y8-COL8		N/C
+RESET		Pin 4
+
+X0-ROW0		Pin 21
+X1-ROW1		Pin 24		
+X2-ROW2		Pin 2
+X3-ROW3		Pin 18
+X4-ROW4		Pin 16
+X5-ROW5		Pin 13
+X12-ROW6	Pin 22
+X13-ROW7	Pin 12
+X6-ROW8		Pin 11
+X7-ROW9		Pin 9
+
+X8-ROW10	Pin 10
+X9-ROW11	Pin 7
+X10-ROW12	Pin 14
+X11-ROW13	N/C
+X14-ROW14	N/C
+X15-ROW15	N/C
+AVR PB3		N/C
+AVR PB4		N/C
+AVR PC5		Pin 23
+AVR PC6		Pin 24
+
+The following connections also need to be made.
+This allows the keyboard interface to be powered direct from the 
+Master Compact.
+Interface connector	Keyboard connector	
+GND					pin 1
+VCC (+5V in)		pin 25
+
+These allow the Master's keyboard LEDS to be output on the PS/2 keyboard LEDS.
+AVR PC5				pin 23
+AVR PC6				pin 24
+
+A customized board is available in the hardware section.
+
+
+===================[ Acorn Electron ]===========================
+
+Connections to the keyboard header on Electron motherboard. 
+Row connections all *REQUIRE* a diode, cathode towards the pin anode towards the interface.
+Column connections all need (approx) 15K pullups.
+
+Y0-COL0		Pin 5
+Y1-COL1		Pin 6
+Y2-COL2		Pin 7
+Y3-COL3		Pin 8
+Y4-COL4		N/C
+Y5-COL5		N/C
+Y6-COL6		N/C
+Y7-COL7		N/C
+Y8-COL8		N/C
+RESET		Pin 1
+
+X0-ROW0		Pin 18
+X1-ROW1		Pin 19
+X2-ROW2		Pin 20
+X3-ROW3		Pin 21
+X4-ROW4		Pin 22
+X5-ROW5		Pin 17
+X12-ROW6	Pin 16
+X13-ROW7	Pin 15
+X6-ROW8		Pin 14
+X7-ROW9		Pin 13
+
+X8-ROW10	Pin 12
+X9-ROW11	Pin 11
+X10-ROW12	Pin 10
+X11-ROW13	Pin 9
+X14-ROW14	N/C
+X15-ROW15	N/C
+AVR PB3		N/C
+AVR PB4		N/C
+AVR PC5		Pin 2
+AVR PC6		N/C
+
+Still being debugged - 2021-01-11
+
+===================[ Dragon 32/64/Alpha ]===========================
+
+Y0-COL0		Keyboard connector pin 1	
+Y1-COL1		Keyboard connector pin 2
+Y2-COL2		Keyboard connector pin 4	
+Y3-COL3		Keyboard connector pin 5
+Y4-COL4		Keyboard connector pin 6
+Y5-COL5		Keyboard connector pin 7
+Y6-COL6		Keyboard connector pin 8
+Y7-COL7		N/C
+Y8-COL8		N/C
+RESET		
+
+X0-ROW0		Keyboard connector pin 9
+X1-ROW1		Keyboard connector pin 10		
+X2-ROW2		Keyboard connector pin 11
+X3-ROW3		Keyboard connector pin 12
+X4-ROW4		Keyboard connector pin 13
+X5-ROW5		Keyboard connector pin 14
+X12-ROW6	Keyboard connector pin 15
+X13-ROW7	Keyboard connector pin 16
+X6-ROW8		N/C
+X7-ROW9		N/C
+
+X8-ROW10	N/C
+X9-ROW11	N/C
+X10-ROW12	N/C
+X11-ROW13	N/C
+X14-ROW14	N/C
+X15-ROW15	N/C
+AVR PB3		N/C
+AVR PB4		N/C
+AVR PC5		N/C
+AVR PC6		N/C
+
+If using Dragon/CoCo ROM switching where Dragon is low, CoCo is high.
+Connect switch input to AVR PB0.
+
+===============[ Sinclair ZX Spectrum or Spectrum + ]====================
+
+The Spectrum has two groups of keyboard connection pins :
+	One group of 5 pins on the left of the board
+	One group of 8 pins on the right of the board
+
+Assuming the pins are numbered left to right, 1..5 and 1..8
+
+Y0-COL0		left 1
+Y1-COL1		left 2
+Y2-COL2		left 3	
+Y3-COL3		left 4
+Y4-COL4		left 5
+Y5-COL5		n/c
+Y6-COL6		n/c
+Y7-COL7		n/c
+Y8-COL8		n/c 
+RESET		Can be wired to the CPU reset line.
+
+X0-ROW0		right 1
+X1-ROW1		right 2		
+X2-ROW2		right 3
+X3-ROW3		right 6
+X4-ROW4		right 4
+X5-ROW5		right 5
+X12-ROW6	right 7
+X13-ROW7	right 8
+X6-ROW8		n/c
+X7-ROW9		n/c
+
+X8-ROW10	N/C
+X9-ROW11	N/C
+X10-ROW12	N/C
+X11-ROW13	N/C
+X14-ROW14	N/C
+X15-ROW15	N/C
+AVR PB3		N/C
+AVR PB4		N/C
+AVR PC5		N/C
+AVR PC6		N/C
+
+
+==================[ Sinclair ZX80/ZX81 ]====================
+
+The ZX81 has two groups of keyboard connection pins :
+	One group of 5 pins on the left of the board
+	One group of 8 pins on the right of the board
+
+Assuming the pins are numbered left to right, 1..5 and 1..8
+
+Y0-COL0		left 5	
+Y1-COL1		left 4
+Y2-COL2		left 3	
+Y3-COL3		left 2
+Y4-COL4		left 1
+Y5-COL5		n/c
+Y6-COL6		n/c
+Y7-COL7		n/c
+Y8-COL8		n/c 
+RESET		Can be wired to the CPU reset line.
+
+X0-ROW0		right 1
+X1-ROW1		right 2		
+X2-ROW2		right 4
+X3-ROW3		right 6
+X4-ROW4		right 8
+X5-ROW5		right 7
+X12-ROW6	right 5
+X13-ROW7	right 3
+X6-ROW8		n/c
+X7-ROW9		n/c
+
+X8-ROW10	N/C
+X9-ROW11	N/C
+X10-ROW12	N/C
+X11-ROW13	N/C
+X14-ROW14	N/C
+X15-ROW15	N/C
+AVR PB3		N/C
+AVR PB4		N/C
+AVR PC5		N/C
+AVR PC6		N/C
+
+
+===============[ Template. ]====================
+
+
+Y0-COL0		
+Y1-COL1		
+Y2-COL2			
+Y3-COL3		
+Y4-COL4		
+Y5-COL5		
+Y6-COL6		
+Y7-COL7		
+Y8-COL8		
+RESET		
+
+X0-ROW0		
+X1-ROW1				
+X2-ROW2		
+X3-ROW3		
+X4-ROW4		
+X5-ROW5		
+X12-ROW6	
+X13-ROW7	
+X6-ROW8		
+X7-ROW9		
+
+X8-ROW10	
+X9-ROW11	
+X10-ROW12	
+X11-ROW13	
+X14-ROW14	
+X15-ROW15	
+AVR PB3
+AVR PB4
+AVR PC5
+AVR PC6

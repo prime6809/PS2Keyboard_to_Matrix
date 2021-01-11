@@ -1,0 +1,42 @@
+EAGLE Version 4.16r2 Copyright (c) 1988-2006 CadSoft
+
+Electrical Rule Check for F:/Phill/Eagle/Acorn/AtomClone/Mk2.0/TapeBoard/KbdCassette.sch at 01/08/2009 15:56:46 
+
+WARNING: Sheet 1/1: POWER Pin IC1 AGND connected to GND
+WARNING: Sheet 1/1: POWER Pin IC1 AVCC connected to VCC
+WARNING: Sheet 1/1: POWER Pin IC1 AREF connected to VCC
+WARNING: Sheet 1/1: POWER Pin IC2>NAME VSS connected to GND
+WARNING: Sheet 1/1: POWER Pin IC2>NAME VEE connected to GND
+WARNING: Sheet 1/1: POWER Pin IC3G$3 VCCINT connected to VCC
+WARNING: Sheet 1/1: POWER Pin IC3G$3 VCCINT connected to VCC
+WARNING: Sheet 1/1: POWER Pin IC3G$3 VCCIO connected to VCC
+WARNING: Sheet 1/1: POWER Pin REG1 IN connected to VCC
+WARNING: Sheet 1/1: POWER Pin REG1 OUT connected to VCC33
+ERROR: Sheet 1/1: unconnected INPUT Pin: CN4 6
+ERROR: Sheet 1/1: unconnected INPUT Pin: CN4 8
+ERROR: Sheet 1/1: unconnected INPUT Pin: CN4 9
+ERROR: Sheet 1/1: unconnected INPUT Pin: CN4 DETECT
+ERROR: Sheet 1/1: unconnected INPUT Pin: CN4 COM_TERM
+ERROR: Sheet 1/1: unconnected INPUT Pin: CN4 WRITE_PROT
+WARNING: Only 1 Pin on net PB3
+WARNING: Only 1 Pin on net X1
+WARNING: Only 1 Pin on net X9
+WARNING: Only 1 Pin on net X10
+WARNING: Only 1 Pin on net X11
+WARNING: Only 1 Pin on net X14
+WARNING: Only 1 Pin on net X15
+WARNING: Sheet 1/1, Net GND: missing Junction at (0.1 5.6)
+WARNING: Sheet 1/1, Net RAWCASIN: missing Junction at (1 9.3)
+WARNING: Sheet 1/1, Net Y4-COL4: close but unconnected wires at (12.6 4.3)
+WARNING: Sheet 1/1, Net Y4-COL4: close but unconnected wires at (12.6 4.3)
+WARNING: Sheet 1/1, Net Y5-COL5: close but unconnected wires at (12.6 4.2)
+WARNING: Sheet 1/1, Net Y5-COL5: close but unconnected wires at (12.6 4.2)
+WARNING: Sheet 1/1, Net Y6-COL6: close but unconnected wires at (12.6 4.1)
+WARNING: Sheet 1/1, Net Y6-COL6: close but unconnected wires at (12.6 4.1)
+WARNING: Sheet 1/1, Net Y7-COL7: close but unconnected wires at (12.6 4)
+WARNING: Sheet 1/1, Net Y7-COL7: close but unconnected wires at (12.6 4)
+
+Board and schematic are consistent
+
+    6 errors
+   27 warnings
