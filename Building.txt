@@ -24,6 +24,12 @@ make TARGET=atom
 
 This will build the atom firmware and leave the compiled files in the atom folder.
 
+
+*****IMPORTANT***** 
+		TARGET **MUST** be in upper case, with no spaces between it and 
+		the equal sign and no space between equal and target name.
+*****IMPORTANT*****
+
 make TARGET=atom clean
 
 This will cleanup any compiled files, or intermediates.
@@ -41,39 +47,42 @@ of the build process.
 
 The most important ones are :
 
-MCU = 
+MCU= 
 
 The board can use any AVR that is pinout compatible with the atmega 16, this includes
 the atmega 16, 32, 164, 324, 664, 1284 (and pico power versions). The correct AVR needs
 to be specified here.
 
-AVRDUDE_PROGRAMMER =
+AVRDUDE_PROGRAMMER=
 
 The type of programmer you are using (or the one your programmer emulates), the 
 documentation for your programmer should be consulted to find out what to use.
 
-AVRDUDE_PORT = 
+AVRDUDE_PORT= 
 
 The name of the communtications port your programmer is connected to, see the 
 documentation for your programmer.
 
-You can also uncomment and set TARGET = in the Makefile in this case whatever you 
+You can also uncomment and set TARGET= in the Makefile in this case whatever you 
 specify here will be the default target when none is specified.
 
-All of these can also be specified on the command line e.g.
+All of these can also be specified on the command line e.g. 
 
 make TARGET=atom MCU=atmega16 AVRDUDE_PROGRAMMER=avrispv2 AVRDUDE_PORT=com2:
 
 Will build the firmware for the atom, targeted at an ATmega16 chip, and will 
 attempt to program it by talking avrispv2 protocol on port COM2:
 
+*****IMPORTANT*****
+	**NOTE** Any make variables supplied on the command line **MUST** be in upper 
+	case with no spaces either side of the equals.
+*****IMPORTANT*****
 
-
-Valid targets are:
+Current valid targets are:
 
 Target 			Machines
 atom			Acorn Atom.
-bbc				Acorn BBC A/B/B+ (requires additional hardware).
+bbc			Acorn BBC A/B/B+ (requires additional hardware).
 bbcmaster		Acorn BBC Master / Master Compact.
 dragon_coco		Dragon 32/64/Alpha or Tandy CoCo 1/2/3.
 electron		Acorn electron.
