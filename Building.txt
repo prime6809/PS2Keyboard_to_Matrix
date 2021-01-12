@@ -50,7 +50,7 @@ The most important ones are :
 MCU= 
 
 The board can use any AVR that is pinout compatible with the atmega 16, this includes
-the atmega 16, 32, 164, 324, 664, 1284 (and pico power versions). The correct AVR needs
+the atmega 16, 32, 164, 324, 644, 1284 (and pico power versions). The correct AVR needs
 to be specified here.
 
 AVRDUDE_PROGRAMMER=
