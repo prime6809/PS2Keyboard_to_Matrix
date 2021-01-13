@@ -98,11 +98,18 @@ as this is used by the matrix handling code to flag a key pressed or released.
 #define ELK_KEY_Z			0x3C
 
 #define ELK_KEY_ESC			0x0D
-#define ELK_KEY_CAPS		0x1D
+#define ELK_KEY_FUNC		0x1D
 #define ELK_KEY_CTRL		0x2D
 #define ELK_KEY_SHIFT		0x3D
 
 #define ELK_KEY_BREAK		0xFF
+
+// Aliases for convenience
+#define	ELK_KEY_UP			ELK_KEY_POUND
+#define ELK_KEY_DOWN		ELK_KEY_UNDER
+#define ELK_KEY_RIGHT		ELK_KEY_PIPE
+#define ELK_KEY_LEFT		ELK_KEY_CLARET
+
 
 #define SHIFT_KEY	ELK_KEY_SHIFT
 #define RESET_KEY	ELK_KEY_BREAK

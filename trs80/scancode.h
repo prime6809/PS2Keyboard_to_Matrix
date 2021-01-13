@@ -2,6 +2,7 @@
  Scancode table for the TRS80 keyboard interface. 
 
  Adapted from PCScanCodeTo Dragon, P.Harvey-Smith, 2008-12-06.
+ Tested / updated keymap on a real TRS80 Model 4, Bas Gialopsos, 2021-01-12.
  
  The TRS80 keyboard data is then output to a Zarlink MT8816 8x16 
  crosspoint switch.
@@ -84,9 +85,9 @@ as this is used by the matrix handling code to flag a key pressed or released.
 #define TRS_KEY_8			0x05
 #define TRS_KEY_9			0x15
 #define TRS_KEY_COLON		0x25
-#define TRS_KEY_PLUS		0x35
+#define TRS_KEY_SCOLON		0x35
 #define TRS_KEY_COMMA		0x45
-#define TRS_KEY_EQUAL		0x55
+#define TRS_KEY_MINUS		0x55
 #define TRS_KEY_POINT		0x65
 #define TRS_KEY_SLASH		0x75
 
@@ -109,7 +110,7 @@ as this is used by the matrix handling code to flag a key pressed or released.
 #define TRS_KEY_77			0x77
 
 #define SHIFT_KEY	TRS_KEY_LSHIFT
-#define RESET_KEY	TRS_KEY_BREAK
+#define RESET_KEY	TRS_KEY_77
 
 void ScancodeInit(matrix_t *ToInit);
 #endif

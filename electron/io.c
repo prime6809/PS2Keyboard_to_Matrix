@@ -1,5 +1,5 @@
 /*
-	io.c	: IO routines for the Acorn BBC A/B/B+/Master/Master compact.
+	io.c	: IO routines for the Acorn Electron.
 
 	2009-07-16, P.Harvey-Smith.
 */
@@ -27,6 +27,9 @@ void InitIO(void)
 	
 	// Make Caps LED and Shift lock LED lines inputs
 	LED_DDR &= ~LED_MASK;
+
+	// Invalidate last_leds, so first call to TestLEDS() will set them.
+	last_leds = ~(LED_PIN & LED_MASK);
 }
 
 void ResetMachine(void)
@@ -77,7 +80,7 @@ void MainLoopPoll(void)
 
 void TestLEDS(void)
 {
-	uint8_t	kbleds	= KBD_LED_SCROLL | KBD_LED_NUMLOCK | KBD_LED_CAPS;
+	uint8_t	kbleds	= KBD_LED_NUMLOCK | KBD_LED_CAPS;
 	uint8_t	lleds;
 	
 	// Read LED output lines from Master
@@ -89,8 +92,7 @@ void TestLEDS(void)
 		// Take a local copy of leds 
 		lleds=leds;	
 		
-		// Tanslate BBC->PS/2, lines from BBC are active low
-		if (lleds & SHIFT_LED_MASK) kbleds &= ~KBD_LED_SCROLL;
+		// Tanslate Electron->PS/2, lines from Electron are active low
 		if (lleds & CAPS_LED_MASK) kbleds &= ~KBD_LED_CAPS;
 		
         // Send the command to set the LEDS to the keyboard
