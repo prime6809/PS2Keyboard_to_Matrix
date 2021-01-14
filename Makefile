@@ -39,7 +39,6 @@
 # To rebuild project do "make clean" then "make all".
 #----------------------------------------------------------------------------
 
-
 # MCU name
 MCU = atmega644p
 
