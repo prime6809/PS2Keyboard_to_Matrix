@@ -30,14 +30,9 @@ static uint8_t  CodeCount;
 static uint8_t	InBreak;
 
 static matrix_t		*Matrix = NULL;	
-//static output_key_t	output_key = NULL;	
-//static output_key_t	key_callback = NULL;	
-
 
 // initialise the matrix routines and set the output callback
 void matrix_init(matrix_t *InitMatrix)
-//output_key_t	output,
-//				 output_key_t	callback)
 {
 	log0("Keyboard matrix init\n");
 
@@ -132,7 +127,6 @@ static uint8_t LookupKeys(uint8_t	Scancode,
 void matrix_check_output(void)
 {
 	uint8_t	Scancode;
-//	uint8_t	KeyCode;
 	uint8_t	KeyValid;
 	uint8_t	IsShift;
 	

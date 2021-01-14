@@ -33,8 +33,6 @@ typedef struct
 
 // initialise the matrix routines and set the output callback
 void matrix_init(matrix_t *InitMatrix); 
-//output_key_t	output,
-//				 output_key_t	callback);
 
 // Check for an available scancode and output it.
 void matrix_check_output(void);
