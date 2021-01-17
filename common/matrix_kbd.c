@@ -31,7 +31,7 @@ static uint8_t	InBreak;
 
 static matrix_t		*Matrix = NULL;	
 
-// initialise the matrix routines and set the output callback
+// initialise the matrix routines 
 void matrix_init(matrix_t *InitMatrix)
 {
 	log0("Keyboard matrix init\n");
@@ -56,6 +56,7 @@ static uint8_t LookupKeys(uint8_t	Scancode,
 	uint8_t		Code;	
 	uint8_t		MatrixCode;	
 	uint8_t		Handled	= 0;
+	uint8_t		ShiftKey = Matrix->matrix_shift;	// Default matrix shift key.
 	
 	// Select which table to use
 	if(IsShift)
@@ -74,9 +75,17 @@ static uint8_t LookupKeys(uint8_t	Scancode,
 	while((Prefix!=SCAN_CODE_TERMINATE) && (!Handled))
 	{
 		//log0("o=%d, p=%02X, c=%02X, z=%02X\n",Offset,Prefix,Code,ZXCode);
+		// If we are in the shift lookup table, and we see the code for a new shift key
+		// then set it. 
+		if((SCAN_CODE_NEWSHIFT == Prefix) && (SCAN_CODE_NEWSHIFT == Code) && IsShift)
+		{
+			ShiftKey = MatrixCode;
+		}
+		
+
 		// if code found, output it.
-		// If IsShift is true press shift then key
-		// on release release key then shift
+		// If IsShift is true press ShiftKey then key
+		// on release release key then ShiftKey
 		if((PrefixCode==Prefix) && (Scancode==Code))
 		{
 			log0("MatrixCode=%02X\n",MatrixCode);
@@ -86,7 +95,7 @@ static uint8_t LookupKeys(uint8_t	Scancode,
 				if(MatrixCode!=RESET_KEY)
 				{
 					if(IsShift)
-						Matrix->output(Matrix->matrix_shift,KEY_DOWN);
+						Matrix->output(ShiftKey,KEY_DOWN);
 
 					Matrix->output(MatrixCode,KEY_DOWN);
 				}
@@ -99,7 +108,7 @@ static uint8_t LookupKeys(uint8_t	Scancode,
 				{
 					Matrix->output(MatrixCode,KEY_UP);
 					if(IsShift)
-						Matrix->output(Matrix->matrix_shift,KEY_UP);
+						Matrix->output(ShiftKey,KEY_UP);
 				}
 				else
 					ResetMachine();
@@ -127,7 +136,7 @@ static uint8_t LookupKeys(uint8_t	Scancode,
 void matrix_check_output(void)
 {
 	uint8_t	Scancode;
-	uint8_t	KeyValid;
+	uint8_t	KeyValid = false;
 	uint8_t	IsShift;
 	
 	if(Matrix==NULL)
@@ -197,24 +206,29 @@ void matrix_check_output(void)
 				default: 
 					if(Scancode<=MAX_SCANCODE)
 					{
-						// Lookup normal unshifted keys
-						IsShift=0;
-						KeyValid=LookupKeys(Scancode,IsShift);
-						
-						// If key was not found then try the shifted table
-						if (!KeyValid)
-						{
-							IsShift=1;
-							KeyValid=LookupKeys(Scancode,IsShift);
-						}
-							
+						// 2021-01-15, do callback processing first, then callback can 
+						// override table.
 						if(Matrix->callback!=NULL)
 						{
 							if(LastScanCode!=SCAN_CODE_RELEASE)
-								Matrix->callback(Scancode,KEY_DOWN);
+								KeyValid=Matrix->callback(PrefixCode,Scancode,KEY_DOWN);
 							else
-								Matrix->callback(Scancode,KEY_UP);
+								KeyValid=Matrix->callback(PrefixCode,Scancode,KEY_UP);
 						}
+
+						if(!KeyValid)
+						{
+							// Lookup normal unshifted keys
+							IsShift=0;
+							KeyValid=LookupKeys(Scancode,IsShift);
+						
+							// If key was not found then try the shifted table
+							if (!KeyValid)
+							{
+								IsShift=1;
+								KeyValid=LookupKeys(Scancode,IsShift);
+							}
+						}	
 							
 						PrefixCode=SCAN_CODE_NO_PREFIX;
 					}

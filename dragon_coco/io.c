@@ -44,7 +44,8 @@ void MainLoopPoll(void)
 {	
 }
 
-uint8_t TargetKeyCallback(uint8_t	KeyCode,
+uint8_t TargetKeyCallback(uint8_t	PrefixCode,
+						  uint8_t	KeyCode,
 					      uint8_t	State)
 {
 	return false;

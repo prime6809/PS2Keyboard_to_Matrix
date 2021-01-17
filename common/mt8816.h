@@ -34,10 +34,4 @@ void mt_init(void);
 
 // Output a keycode to the crosspoint
 void mt_output_key(uint8_t	KeyCode,
-				   uint8_t	State);
-				   
-// Each target should have a function called TargetKeyCallback,
-// it should return true if the key was handled, false if it was not.
-uint8_t TargetKeyCallback(uint8_t	KeyCode,
-					      uint8_t	State);
- 
+				   uint8_t	State); 

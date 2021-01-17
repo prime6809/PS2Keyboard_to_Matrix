@@ -165,4 +165,6 @@
 #define ResetScancode	0xF0		// Break scancode
 #define ResetPrefixCode	SCAN_CODE_BESCAPE
 
+#define SCAN_CODE_NEWSHIFT	0xFE	// In Shifted scancode tabe change shift key output
+
 #endif

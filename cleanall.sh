@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TARGETS="atom bbc bbcmaster dragon_coco electron trs80 zx81 zx spectrum"
+TARGETS="atom bbc bbcmaster commodore dragon_coco electron spectrum trs80 zx81"
 
 for TARGET in $TARGETS
 do

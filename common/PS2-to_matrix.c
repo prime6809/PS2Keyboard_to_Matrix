@@ -41,9 +41,10 @@
 
 #define LED_DELAY	150
 
-void key_callback(uint8_t	scancode,
-				  uint8_t	state);
-
+uint8_t KeyCallback(uint8_t	PrefixCode,
+					uint8_t	KeyCode,
+					uint8_t	State);
+					
 matrix_t MainMatrix;
 
 void init_vars(void)
@@ -55,7 +56,7 @@ void init_vars(void)
 	// tables e.g. Dragon and CoCo.
 	
 	MainMatrix.output=&mt_output_key;
-	MainMatrix.callback=&key_callback;
+	MainMatrix.callback=&KeyCallback;
 	MainMatrix.ScancodeTable=NULL;
 	MainMatrix.ScancodeShiftTable=NULL;
 }
@@ -81,18 +82,23 @@ void flag_init(void)
 	ps2_kbd_set_leds(leds);	_delay_ms(LED_DELAY);
 }
 
-void key_callback(uint8_t	scancode,
-				  uint8_t	state)
+uint8_t KeyCallback(uint8_t	PrefixCode,
+					uint8_t	KeyCode,
+					uint8_t	State)
 {
-	if(state==KEY_DOWN)
+	uint8_t result = false;
+	
+	if(State==KEY_DOWN)
 	{
-		switch(scancode)
+		switch(KeyCode)
 		{
 			case SCAN_CODE_F10 :
 				log0("\n");
 				break;
 		}
 	}
+	
+	return result;
 }
 
 int main(void)

@@ -49,28 +49,25 @@ void mt_init(void)
 void mt_output_key(uint8_t	KeyCode,
 				   uint8_t	State)
 {
-	if (!TargetKeyCallback(KeyCode, State))
+	switch (KeyCode)
 	{
-		switch (KeyCode)
-		{
-			case 0xFF :
-				break;
+		case 0xFF :
+			break;
 		
-			default :
-				// combine code and up/down state
-				if (State==KEY_DOWN)
-					KeyCode|=MT_KEY_DOWN;
-				else
-					KeyCode&=~MT_KEY_DOWN;
+		default :
+			// combine code and up/down state
+			if (State==KEY_DOWN)
+				KeyCode|=MT_KEY_DOWN;
+			else
+				KeyCode&=~MT_KEY_DOWN;
 			
-				// output matrix code, and assert strobe to MT8816
-				MT_KEYS_PORT=KeyCode;
-				MTAssertStrobe();
+			// output matrix code, and assert strobe to MT8816
+			MT_KEYS_PORT=KeyCode;
+			MTAssertStrobe();
     
-				// Wait a while for it to settle, then clear strobe
-				_delay_us(10);
-				MTClearStrobe();
-				break;
-		}
+			// Wait a while for it to settle, then clear strobe
+			_delay_us(10);
+			MTClearStrobe();
+			break;
 	}
 }
