@@ -10,6 +10,20 @@
 	2011-04-27, Seperated driver for MT8816 into seperate driver file.
 				Changed from using a table containing all the possible scancodes
 				both used and unused to a table that only contains used scancodes.
+				
+	2021-01-15, Modified the way that callbacks (to the machine driver) are done, so
+				they are done *BEFORE* any table processing. The callback returns
+				a flag to say if it has processed the key or not. 
+				
+	2021-01-18, Modified LookupKeys, so that we can use several blocks of modifier
+				keys within the shift table this way if we wanted to say have a PS/2
+				code encode to the matrix's shift-key but another to ctrl-key we can 
+				do it. This is accieved by having an entry in the shift key table 
+				that consists of the scancode and prefix code being set to 
+				SCAN_CODE_NEWSHIFT, and the matrix code bing the matrix code of the
+				new modifier key. All subsiquent entries will then use this code.
+				This can of course be applied multiple times for different modifiers.
+				Each scan of the table resets to the shift field of Matrix->
 */
 
 #include <avr/io.h>
