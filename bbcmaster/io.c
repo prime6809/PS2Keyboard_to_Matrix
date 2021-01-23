@@ -1,5 +1,5 @@
 /*
-	io.c	: IO routines for the Acorn BBC A/B/B+/Master/Master compact.
+	io.c	: IO routines for the Acorn BBC Master/Master compact.
 
 	2009-07-16, P.Harvey-Smith.
 */
@@ -7,41 +7,26 @@
 #include <avr/interrupt.h>
 #include <inttypes.h>
 #include <util/delay.h>
+#include "globalio.h"
 #include "io.h"
 #include "status.h"
 #include "matrix_kbd.h"
 #include "scancode.h"
 #include "ps2kbd.h"
 
-// Value of leds read by timer interrupt
-volatile uint8_t	leds;
-
 // Value of leds on last call to TestLEDS, used to detect changes
 // and update LEDS on PS/2 keyboard.
-volatile uint8_t	last_leds;
+uint8_t	last_leds = 0;
 
 void InitIO(void)
 {
-	// Make reset line an input
-	RESET_DDR &= ~RESET_MASK;
-	
-	// Make Caps LED and Shift lock LED lines inputs
-	LED_DDR &= ~LED_MASK;
+	// Set numlock led to indicate power on.
+	PS2SetLED(PS2_LED_NUMLOCK);
 }
 
 void ResetMachine(void)
 {
-	log0("ResetMachine()\n");
-	// Make reset line an output, and take reset line low
-	RESET_DDR	|= RESET_MASK;
-	RESET_PORT	&= ~RESET_MASK;
-	
-	// Let it take effect
-	_delay_ms(10);
-	
-	// make it an input again, and let line float
-	RESET_DDR	&= ~RESET_MASK;
-	RESET_PORT	&= ~RESET_MASK;
+	ResetTargetMachine();
 }
 
 uint8_t TargetKeyCallback(uint8_t	PrefixCode,
@@ -78,28 +63,19 @@ void MainLoopPoll(void)
 
 void TestLEDS(void)
 {
-	uint8_t	kbleds	= KBD_LED_SCROLL | KBD_LED_NUMLOCK | KBD_LED_CAPS;
-	uint8_t	lleds;
-	
+	uint8_t	leds;
+
 	// Read LED output lines from Master
-	leds=LED_PIN & LED_MASK;	
+	leds=ReadAUX();	
 	
 	// Only update if they have changed
 	if(leds!=last_leds)
 	{
-		// Take a local copy of leds 
-		lleds=leds;	
-		
 		// Tanslate BBC->PS/2, lines from BBC are active low
-		if (lleds & SHIFT_LED_MASK) kbleds &= ~KBD_LED_SCROLL;
-		if (lleds & CAPS_LED_MASK) kbleds &= ~KBD_LED_CAPS;
+		PS2SetClearLED((~leds & SHIFT_LED_MASK),PS2_LED_SCROLL);
+		PS2SetClearLED((~leds & CAPS_LED_MASK),PS2_LED_CAPS);
 		
-        // Send the command to set the LEDS to the keyboard
-		ps2_kbd_set_leds(kbleds);
-
-		log0("set leds to : %2X\n",kbleds);
-	
         // Update last_leds so that we can detect changes
-		last_leds=lleds;
+		last_leds=leds;
 	}
 }

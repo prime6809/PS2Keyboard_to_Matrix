@@ -15,6 +15,7 @@
 */
 
 #include "scancode.h"
+#include "globalio.h"
 #include "io.h"
 #include "status.h"
 
@@ -262,6 +263,6 @@ void ScancodeInit(matrix_t *ToInit)
 		ToInit->matrix_shift=C64VIC_KEY_LSHIFT;
 	}
 	
-	ToInit->callback=(output_key_callback_t *)&TargetKeyCallback;
+	ToInit->callback=&TargetKeyCallback;
 	ToInit->matrix_reset=RESET_KEY;
 }

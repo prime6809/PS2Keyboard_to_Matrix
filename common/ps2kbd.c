@@ -45,6 +45,9 @@ volatile uint8_t	kbd_queue_insert = 0;
 volatile uint8_t	kbd_queue_remove = 0;
 volatile uint16_t	kbd_status = 0;
 
+uint8_t	PS2_LEDS;
+uint8_t	PS2_LEDS_OLD;
+
 #define KQueueHasSpace()	(((kbd_queue_insert % KBD_BUFSIZE)+1) != (kbd_queue_remove % KBD_BUFSIZE))
 #define KQueueEmpty()		((kbd_queue_insert % KBD_BUFSIZE) == (kbd_queue_remove % KBD_BUFSIZE))
 
@@ -58,6 +61,9 @@ void ps2_kbd_init()
 	kbd_status = 0;
 	kbd_parity = 0;
 	
+	PS2_LEDS = 0;
+	PS2_LEDS_OLD = PS2_LEDS;
+	
 	// Set interrupts
 	
 	KBD_SET_INT();
@@ -66,15 +72,11 @@ void ps2_kbd_init()
 	// Enable pullup on clock
 	
 	KBD_CLOCK_PORT |= KBD_CLOCK_MASK;
-
-//	sei();
 }
 
 
 uint8_t ps2_kbd_queue_scancode(volatile uint8_t p)
 {
-	//log0("PS/2:%02X\n",p);
-	
 	if(KQueueHasSpace())
 	{
 		kbd_queue[kbd_queue_insert++] = p;
@@ -109,13 +111,11 @@ void ps2_kbd_send(uint8_t data)
 	
 	// This behaviour isn't the most desirable, but it's the easiest and proved to be reliable.
 	while(kbd_status & (KBD_SEND | KBD_RECEIVE)) 
-	//	_delay_ms(5);
 		asm("nop");	
 	
 	// Initiate request-to-send, the actual sending of the data
 	// is handled in the ISR.
 	
-	//log0("kbd_send(%2X)\n",data);
 	KBD_CLOCK_PORT &= ~(1<<KBD_CLOCK_BIT);
 	KBD_CLOCK_DDR  |= (1<<KBD_CLOCK_BIT);
 	_delay_us(120);
@@ -147,6 +147,16 @@ void ps2_kbd_update_leds(void)
 	
 	ps2_kbd_send(0xed);
 	ps2_kbd_send(val);
+}
+
+void ps2_poll_leds(void)
+{
+	if ((PS2_LEDS & PS2_LED_MASK) != (PS2_LEDS_OLD & PS2_LED_MASK))
+	{
+		ps2_kbd_set_leds(PS2_LEDS & PS2_LED_MASK);
+		
+		PS2_LEDS_OLD = PS2_LEDS;
+	}
 }
 
 

@@ -30,6 +30,7 @@
 #include <avr/interrupt.h>
 #include <inttypes.h>
 #include <util/delay.h>
+#include "globalio.h"
 #include "ps2kbd.h"
 #include "ps2scancode.h"
 #include "scancode.h"
@@ -67,18 +68,18 @@ void flag_init(void)
 	uint8_t	leds = 0;
 	
 	ps2_kbd_set_leds(leds);	_delay_ms(LED_DELAY);
-	leds|=KBD_LED_SCROLL;
+	leds|=PS2_LED_SCROLL;
 	ps2_kbd_set_leds(leds);	_delay_ms(LED_DELAY);
-	leds|=KBD_LED_CAPS;
+	leds|=PS2_LED_CAPS;
 	ps2_kbd_set_leds(leds);	_delay_ms(LED_DELAY);
-	leds|=KBD_LED_NUMLOCK;
+	leds|=PS2_LED_NUMLOCK;
 	ps2_kbd_set_leds(leds);	_delay_ms(LED_DELAY);
 
-	leds&=~KBD_LED_SCROLL;
+	leds&=~PS2_LED_SCROLL;
 	ps2_kbd_set_leds(leds);	_delay_ms(LED_DELAY);
-	leds&=~KBD_LED_CAPS;
+	leds&=~PS2_LED_CAPS;
 	ps2_kbd_set_leds(leds);	_delay_ms(LED_DELAY);
-	leds&=~KBD_LED_NUMLOCK;
+	leds&=~PS2_LED_NUMLOCK;
 	ps2_kbd_set_leds(leds);	_delay_ms(LED_DELAY);
 }
 
@@ -108,6 +109,7 @@ int main(void)
 	log0("2021-01-06 Ramoth Software.\n");
 	
 	init_vars();
+	GlobalIOInit();
 	
 	log0("PS/2 keyboard init\n");
 	ps2_kbd_init();
@@ -129,6 +131,7 @@ int main(void)
 	{
 		matrix_check_output();
 		MainLoopPoll();			// Poll the I/O driver for work.
+		ps2_poll_leds();		// update keyboard LEDS if needed
 	}
 	
 	return 0;

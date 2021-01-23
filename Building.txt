@@ -84,10 +84,10 @@ Target 			Machines
 atom			Acorn Atom.
 bbc				Acorn BBC A/B/B+ (requires additional hardware).
 bbcmaster		Acorn BBC Master / Master Compact.
-c64vic			Commodore 64 and VIC-20.
+commodore		Commodore 8 bit home machines : VIC-20, C64, C16 and Plus 4.
 dragon_coco		Dragon 32/64/Alpha or Tandy CoCo 1/2/3.
 electron		Acorn electron.
 trs80			Tandy TRS80 model 3/4 (would require additional hardware for model 1).
 zx81			Sinclair ZX80/ZX81.
-zxspectrum		Sinclair ZX Spectrum 16/48/+/+128.
+spectrum		Sinclair ZX Spectrum 16/48/+/+128.
 

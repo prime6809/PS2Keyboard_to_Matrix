@@ -373,6 +373,7 @@ keyboard connector. Do **NOT** try using the keyboard LED connector as
 this has a 470R resistor inline and cannot provide enough power.
 
 ===================[ Dragon 32/64/Alpha ]===========================
+Should also work on Tandy CoCo.
 
 Y0-COL0		Keyboard connector pin 1	
 Y1-COL1		Keyboard connector pin 2
@@ -409,6 +410,9 @@ AVR PC6		N/C
 
 If using Dragon/CoCo ROM switching where Dragon is low, CoCo is high.
 Connect switch input to AVR PB0.
+You will need to find a place to take the +5V and GND from the motherboard.
+e.g. The power pins of one of the LSTTL chips or the ROMS.
+
 
 ===============[ Sinclair ZX Spectrum or Spectrum + ]====================
 

@@ -75,9 +75,10 @@
 #define	KBD_BREAK		0x0400
 #define	KBD_LOCKED		0x0800
 
-#define	KBD_LED_CAPS	0x04
-#define KBD_LED_NUMLOCK	0x02
-#define KBD_LED_SCROLL	0x01
+#define	PS2_LED_CAPS	0x04
+#define PS2_LED_NUMLOCK	0x02
+#define PS2_LED_SCROLL	0x01
+#define PS2_LED_MASK	(PS2_LED_CAPS | PS2_LED_NUMLOCK | PS2_LED_SCROLL)
 
 #define KBD_CMD_SET_LEDS	0xED
 
@@ -110,5 +111,14 @@ void ps2_kbd_set_leds(uint8_t	kbleds);
 // CAPS LOCK or NUM LOCK is activated.
 
 uint16_t ps2_kbd_get_status(void);
+
+// Check to see if keyboard LEDS have changed since last poll if so, update them.
+void ps2_poll_leds(void);
+
+extern uint8_t	PS2_LEDS;
+
+#define PS2SetLED(LED)				PS2_LEDS |= LED
+#define PS2ClearLED(LED)			PS2_LEDS &= ~LED
+#define PS2SetClearLED(STATE,LED)  do { if (STATE) PS2SetLED(LED); else PS2ClearLED(LED); } while (0)
 
 #endif

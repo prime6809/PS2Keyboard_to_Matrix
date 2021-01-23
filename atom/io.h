@@ -7,16 +7,6 @@
 #ifndef _IO_H_
 #define _IO_H_
 
-//
-// Reset line for Atom.
-//
-
-#define RESET_PORT		PORTD
-#define RESET_PIN		PIND
-#define RESET_DDR		DDRD
-#define RESET			3
-#define RESET_MASK		(1<<RESET)
-
 #define ReptPIN			PIND		// Rept line attached to this port
 #define ReptPORT		PORTD
 #define ReptDDR			DDRD

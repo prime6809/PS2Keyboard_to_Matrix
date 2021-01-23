@@ -7,6 +7,7 @@
 #include <avr/interrupt.h>
 #include <inttypes.h>
 #include <util/delay.h>
+#include "globalio.h"
 #include "io.h"
 #include "status.h"
 #include "matrix_kbd.h"
@@ -19,31 +20,13 @@ static uint8_t	LockState;
 
 void InitIO(void)
 {
-	// Make reset line an input
-	RESET_DDR &= ~RESET_MASK;
-	
-	// Jumper to select if machine is TED based or VIC/VICII based.
-	// set as input with pullup
-	ISTED_DDR  &= ISTED_MASK;
-	ISTED_PORT |= ISTED_MASK;
-	
 	// Clear capslock
 	LockState=KEY_UP;
 }
 
 void ResetMachine(void)
 {
-	log0("ResetMachine()\n");
-	// Make reset line an output, and take reset line low
-	RESET_DDR	|= RESET_MASK;
-	RESET_PORT	&= ~RESET_MASK;
-	
-	// Let it take effect
-	_delay_ms(10);
-	
-	// make it an input again, and let line float
-	RESET_DDR	&= ~RESET_MASK;
-	RESET_PORT	&= ~RESET_MASK;
+	ResetTargetMachine();
 }
 
 uint8_t TargetKeyCallback(uint8_t	PrefixCode,

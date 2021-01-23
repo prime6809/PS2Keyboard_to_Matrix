@@ -7,6 +7,7 @@
 #include <avr/interrupt.h>
 #include <inttypes.h>
 #include <util/delay.h>
+#include "globalio.h"
 #include "io.h"
 #include "status.h"
 #include "matrix_kbd.h"
@@ -14,23 +15,11 @@
 
 void InitIO(void)
 {
-	// Make reset line an input
-	RESET_DDR &= ~RESET_MASK;
 }
 
 void ResetMachine(void)
 {
-	log0("ResetTRS80()\n");
-	// Make reset line an output, and take reset line low
-	RESET_DDR	|= RESET_MASK;
-	RESET_PORT	&= ~RESET_MASK;
-	
-	// Let it take effect
-	_delay_ms(10);
-	
-	// make it an input again, and let line float
-	RESET_DDR	&= ~RESET_MASK;
-	RESET_PORT	&= ~RESET_MASK;
+	ResetTargetMachine();
 }
 
 // Called from main loop.

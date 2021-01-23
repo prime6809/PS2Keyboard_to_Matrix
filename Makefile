@@ -40,7 +40,7 @@
 #----------------------------------------------------------------------------
 
 # MCU name
-MCU = atmega644p
+MCU = atmega644
 
 # Processor frequency.
 #     This will define a symbol, F_CPU, in all source code files equal to the 
@@ -78,7 +78,7 @@ OBJDIR = .
 
 
 # List C source files here. (C dependencies are automatically generated.)
-SRC =  common/PS2-to_matrix.c  common/ps2kbd.c common/status.c common/mt8816.c common/matrix_kbd.c $(TARGET)/scancode.c $(TARGET)/io.c 
+SRC =  common/PS2-to_matrix.c  common/ps2kbd.c common/status.c common/mt8816.c common/matrix_kbd.c common/globalio.c $(TARGET)/scancode.c $(TARGET)/io.c 
 
 # List C++ source files here. (C dependencies are automatically generated.)
 CPPSRC = 
