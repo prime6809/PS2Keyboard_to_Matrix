@@ -46,4 +46,16 @@ void matrix_check_output(void);
 uint8_t TargetKeyCallback(uint8_t	PrefixCode,
 						  uint8_t	KeyCode,
 					      uint8_t	State);
+						  
+// For extracting row and column from table entries
+#define MAX_ROW		0x07
+#define MAX_COL		0x0F
+#define ROW_MASK	0x70
+#define COL_MASK	0x0F
+
+#define ROW_SHIFT	4
+
+#define GetRow(RC)	((RC & ROW_MASK) >> ROW_SHIFT)
+#define GetCol(RC)	(RC & COL_MASK)
+ 
 #endif

@@ -29,6 +29,7 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include <util/delay.h>
+#include <string.h>
 #include "matrix_kbd.h"
 #include "ps2kbd.h"
 #include "scancode.h"
@@ -45,6 +46,8 @@ static uint8_t	InBreak;
 
 static matrix_t		*Matrix = NULL;	
 
+void check_matrix(void);
+
 // initialise the matrix routines 
 void matrix_init(matrix_t *InitMatrix)
 {
@@ -59,6 +62,8 @@ void matrix_init(matrix_t *InitMatrix)
     Pos=0;
     CodeCount=0;
 	InBreak=0;
+	
+	check_matrix();
 }
 
 static uint8_t LookupKeys(uint8_t	Scancode,
@@ -253,3 +258,61 @@ void matrix_check_output(void)
 		}
 	}
 }	
+
+
+void check_matrix(void)
+{
+	uint16_t	Check[MAX_ROW+1];
+	int8_t		Row;
+	int8_t		Col;
+	uint16_t	Offset 	= 0;
+	uint8_t		*Table;
+	uint8_t		Prefix;
+	uint8_t		Code;	
+	uint8_t		MatrixCode;	
+	uint8_t		Pass;
+
+	memset(Check,0x00,sizeof(Check));
+
+	for(Pass=0 ; Pass < 1; Pass++)
+	{
+		if (0 == Pass)
+			Table  = Matrix->ScancodeTable;
+		else
+			Table  = Matrix->ScancodeShiftTable;
+		
+		Offset = 0;
+		Prefix = 0;
+		
+		while(Prefix!=SCAN_CODE_TERMINATE) 
+		{
+			Prefix 		= pgm_read_byte(&Table[Offset++]);
+			Code		= pgm_read_byte(&Table[Offset++]);
+			MatrixCode	= pgm_read_byte(&Table[Offset++]);
+	
+			if(Prefix!=SCAN_CODE_TERMINATE)
+			{
+				Check[GetRow(MatrixCode)] |= (1 << GetCol(MatrixCode));
+			}
+		}
+	}
+	
+	log0("ColNo    ");
+	for(Col = MAX_COL; Col>-1; Col--)
+		log0(" %02X",Col);
+	
+	log0("\n");
+	
+	for(Row = 0; Row < MAX_ROW; Row++)
+	{
+		log0("Row[%d]: ",Row);
+		for(Col = MAX_COL; Col>-1; Col--)
+		{
+			if(Check[Row] & (1<<Col))
+				log0("  1");
+			else 
+				log0("  0");
+		}
+		log0("\n");
+	}
+}
