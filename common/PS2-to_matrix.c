@@ -50,7 +50,7 @@ matrix_t MainMatrix;
 
 void init_vars(void)
 {
-	log0("init_vars()\n");
+	logv0("init_vars()\n");
 
 	// We do this here, in the future we could have multiple scancode tables
 	// and switch them around as needed, if we had two machines with similar 
@@ -94,7 +94,7 @@ uint8_t KeyCallback(uint8_t	PrefixCode,
 		switch(KeyCode)
 		{
 			case SCAN_CODE_F10 :
-				log0("\n");
+				logv0("\n");
 				break;
 		}
 	}
@@ -104,14 +104,17 @@ uint8_t KeyCallback(uint8_t	PrefixCode,
 
 int main(void)
 {
-	Serial_Init(115200,115200);
-	log0(TARGET_NAME" PS/2 Keyboard interface V1.0\n");
-	log0("2021-01-06 Ramoth Software.\n");
-	
-	init_vars();
 	GlobalIOInit();
 	
-	log0("PS/2 keyboard init\n");
+	Serial_Init(115200,115200,DIPIsSet(DIPS3));
+	logv0(TARGET_NAME" PS/2 Keyboard interface V1.0\n");
+	logv0("2021-01-06 Ramoth Software.\n");
+	
+	logv0("DIP3 is set!\n");
+	
+	init_vars();
+	
+	logv0("PS/2 keyboard init\n");
 	ps2_kbd_init();
 
 	mt_init();
@@ -119,10 +122,10 @@ int main(void)
 	
 	matrix_init(&MainMatrix);
 	
-	log0("I/O Init\n");
+	logv0("I/O Init\n");
 	InitIO();
 	
-	log0("init done!\n");
+	logv0("init done!\n");
 	sei();
 
 	flag_init();

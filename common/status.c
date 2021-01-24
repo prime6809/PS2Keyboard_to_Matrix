@@ -22,6 +22,8 @@
 static int StdioSerial_TxByte0(char DataByte, FILE *Stream);
 static int StdioSerial_TxByte1(char DataByte, FILE *Stream);
 
+uint8_t	STATUS_VERBOSE = 0;
+
 FILE ser0stream = FDEV_SETUP_STREAM(StdioSerial_TxByte0,NULL,_FDEV_SETUP_WRITE);
 FILE ser1stream = FDEV_SETUP_STREAM(StdioSerial_TxByte1,NULL,_FDEV_SETUP_WRITE);
 
@@ -69,13 +71,13 @@ void cls(uint8_t	Port)
 {
 	if(Port==1)
 	{
-		log1(ESC_ERASE_DISPLAY);
-		log1(ESC_CURSOR_POS(0,0));
+		logv1(ESC_ERASE_DISPLAY);
+		logv1(ESC_CURSOR_POS(0,0));
 	}
 	else
 	{
-		log0(ESC_ERASE_DISPLAY);
-		log0(ESC_CURSOR_POS(0,0));
+		logv0(ESC_ERASE_DISPLAY);
+		logv0(ESC_CURSOR_POS(0,0));
 	}
 }
 
@@ -180,8 +182,11 @@ uint8_t Serial_ByteRecieved1(void)
 }
 
 void Serial_Init(const uint32_t BaudRate0,
-				 const uint32_t BaudRate1)
+				 const uint32_t BaudRate1,
+				 const uint8_t Verbose)
 {
+	STATUS_VERBOSE = Verbose;
+	
 	if (BaudRate0<=0)
 		USART_Init0(DefaultBaudRate);
 	else
@@ -195,11 +200,12 @@ void Serial_Init(const uint32_t BaudRate0,
 	cls(0);
 	cls(1);
 	
-	log0("stdio initialised\n");
-	fprintf_P(&ser0stream,CompileDateTime);
+	logv0("stdio initialised\n");
+	if (STATUS_VERBOSE)
+		fprintf_P(&ser0stream,CompileDateTime);
 	
-	log0("SerialPort0\n");
-	log1("SerialPort1\n");
+	logv0("SerialPort0\n");
+	logv1("SerialPort1\n");
 }
 
 #ifdef USE_HEXDUMP
@@ -242,8 +248,8 @@ void HexDump(const uint8_t 	*Buff,
 		}
 		switch (Port)
 		{
-			case 0 : log0("%s\n",LineBuff); break;
-			case 1 : log1("%s\n",LineBuff); break;
+			case 0 : logv0("%s\n",LineBuff); break;
+			case 1 : logv1("%s\n",LineBuff); break;
 		}
 	}
 }

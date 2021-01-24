@@ -250,14 +250,14 @@ void ScancodeInit(matrix_t *ToInit)
 {
 	if (IsTED) 
 	{
-		log0("TED machine driver selected (C16, Plus4)\n");
+		logv0("TED machine driver selected (C16, Plus4)\n");
 		ToInit->ScancodeTable=(uint8_t *)ScancodeTableC16P4;
 		ToInit->ScancodeShiftTable=(uint8_t *)ScancodeShiftTableC16P4;
 		ToInit->matrix_shift=C64VIC_KEY_LSHIFT;
 	}
 	else
 	{
-		log0("VIC/VICII machine driver selected (VIC-20, C64)\n");
+		logv0("VIC/VICII machine driver selected (VIC-20, C64)\n");
 		ToInit->ScancodeTable=(uint8_t *)ScancodeTableC64VIC;
 		ToInit->ScancodeShiftTable=(uint8_t *)ScancodeShiftTableC64VIC;
 		ToInit->matrix_shift=C64VIC_KEY_LSHIFT;

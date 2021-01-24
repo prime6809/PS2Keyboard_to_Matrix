@@ -115,7 +115,7 @@ SCAN_CODE_TERMINATE, 	SCAN_CODE_TERMINATE, 	SCAN_CODE_TERMINATE
 
 void ScancodeInit(matrix_t *ToInit)
 {
-	log0("ScancodeInit()\n");
+	logv0("ScancodeInit()\n");
 	ToInit->ScancodeTable=(ptable_t)&ScancodeTableZX8X;
 	ToInit->ScancodeShiftTable=(ptable_t)&ScancodeShiftTableZX8X;
 	ToInit->matrix_shift=ZX8X_KEY_SHIFT;

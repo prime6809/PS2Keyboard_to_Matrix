@@ -34,7 +34,7 @@ void mt_init(void)
 	MT_KEYS_DDR |= 0xFF;
 	MT_CTRL_DDR	|= ((1<<MT_RESET) | (1<<MT_STROBE));
 	mt_reset();
-	log0("MT8816 driver initialised\n");
+	logv0("MT8816 driver initialised\n");
 }
 
 /* 

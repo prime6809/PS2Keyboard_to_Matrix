@@ -23,7 +23,11 @@
 				SCAN_CODE_NEWSHIFT, and the matrix code bing the matrix code of the
 				new modifier key. All subsiquent entries will then use this code.
 				This can of course be applied multiple times for different modifiers.
-				Each scan of the table resets to the shift field of Matrix->
+				Each scan of the table resets to the shift field of Matrix->matrix_shift
+				
+	2021-01-24, Added code to dump the PS2->Matrix table as an array on screen. This
+			    is usefull for spotting matrix positions that have no PS/2 key encoding 
+				to them.
 */
 
 #include <avr/io.h>
@@ -36,13 +40,10 @@
 #include "status.h"
 #include "io.h"
 
-
 static uint8_t	LastScanCode;
 static uint8_t	PrefixCode;
 
-static uint8_t  Pos;
 static uint8_t  CodeCount;
-static uint8_t	InBreak;
 
 static matrix_t		*Matrix = NULL;	
 
@@ -51,7 +52,7 @@ void check_matrix(void);
 // initialise the matrix routines 
 void matrix_init(matrix_t *InitMatrix)
 {
-	log0("Keyboard matrix init\n");
+	logv0("Keyboard matrix init\n");
 
 	LastScanCode=0x00;
 	PrefixCode=SCAN_CODE_NO_PREFIX;
@@ -59,11 +60,11 @@ void matrix_init(matrix_t *InitMatrix)
 	Matrix=InitMatrix;
 
     // Init Scancode buffer variables
-    Pos=0;
     CodeCount=0;
-	InBreak=0;
 	
-	check_matrix();
+	// If DIP4 is set then display matrix.
+	if (DIPIsSet(DIPS4)) 
+		check_matrix();
 }
 
 static uint8_t LookupKeys(uint8_t	Scancode,
@@ -88,12 +89,12 @@ static uint8_t LookupKeys(uint8_t	Scancode,
 	Code		= pgm_read_byte(&Table[Offset++]);
 	MatrixCode	= pgm_read_byte(&Table[Offset++]);
 	
-	log0("LookupKeys(%02X,%d), Table=%05X\n",Scancode,IsShift,Table);
+	logv0("LookupKeys(%02X,%d), Table=%05X\n",Scancode,IsShift,Table);
 	
 	// Scan through shift code table
 	while((Prefix!=SCAN_CODE_TERMINATE) && (!Handled))
 	{
-		//log0("o=%d, p=%02X, c=%02X, z=%02X\n",Offset,Prefix,Code,ZXCode);
+		//logv0("o=%d, p=%02X, c=%02X, z=%02X\n",Offset,Prefix,Code,ZXCode);
 		// If we are in the shift lookup table, and we see the code for a new shift key
 		// then set it. 
 		if((SCAN_CODE_NEWSHIFT == Prefix) && (SCAN_CODE_NEWSHIFT == Code) && IsShift)
@@ -107,7 +108,7 @@ static uint8_t LookupKeys(uint8_t	Scancode,
 		// on release release key then ShiftKey
 		if((PrefixCode==Prefix) && (Scancode==Code))
 		{
-			log0("MatrixCode=%02X\n",MatrixCode);
+			logv0("MatrixCode=%02X\n",MatrixCode);
 
 			if(LastScanCode!=SCAN_CODE_RELEASE)
 			{
@@ -160,15 +161,15 @@ void matrix_check_output(void)
 	
 	if(Matrix==NULL)
 	{
-		log0("ERROR, no matrix driver initialised, please initialise first with matrix_init()\n");
+		logv0("ERROR, no matrix driver initialised, please initialise first with matrix_init()\n");
 		return;
 	}
 	else
 	{
 		if((Matrix->output==NULL) || (Matrix->ScancodeTable==NULL) || (Matrix->ScancodeShiftTable==NULL))
 		{
-			log0("ERROR, matrix structure not correctly initialized!\n");
-			log0("Matrix->output=%d, Matrix->ScancodeTable=%d, Matrix->ScancodeShiftTable=%d",
+			logv0("ERROR, matrix structure not correctly initialized!\n");
+			logv0("Matrix->output=%d, Matrix->ScancodeTable=%d, Matrix->ScancodeShiftTable=%d",
 			     Matrix->output, Matrix->ScancodeTable, Matrix->ScancodeShiftTable);
 				 
 			return;
@@ -181,9 +182,9 @@ void matrix_check_output(void)
 	// If it's a valid scancode process it
 	if(Scancode!=0)
 	{
-        //log0("%2X ",Scancode);
+        //logv0("%2X ",Scancode);
 		//if(Scancode!=LastScanCode)
-        //    log0("Last:%2.2X Scan:%2.2X Prefix:%2.2X Count=%d\n",LastScanCode,Scancode,PrefixCode,CodeCount);
+        //    logv0("Last:%2.2X Scan:%2.2X Prefix:%2.2X Count=%d\n",LastScanCode,Scancode,PrefixCode,CodeCount);
 	
 		if (CodeCount>0)
 		{
@@ -259,7 +260,9 @@ void matrix_check_output(void)
 	}
 }	
 
-
+// Display a representation of the matrix codes that are present in the
+// scancode to matrix tables. This can be used to spot gaps in the matrix
+// where no PS/2 code encodes to that matrix position.
 void check_matrix(void)
 {
 	uint16_t	Check[MAX_ROW+1];
@@ -271,19 +274,26 @@ void check_matrix(void)
 	uint8_t		Code;	
 	uint8_t		MatrixCode;	
 	uint8_t		Pass;
+	uint8_t		OutCh;
 
+	// Clear array to hold matrix code presence flags
 	memset(Check,0x00,sizeof(Check));
 
+	// Make a pass over both the ScanCode table and the ShiftScan code table
 	for(Pass=0 ; Pass < 1; Pass++)
 	{
+		// Select table.
 		if (0 == Pass)
 			Table  = Matrix->ScancodeTable;
 		else
 			Table  = Matrix->ScancodeShiftTable;
 		
+		// Start at the beginning :)
 		Offset = 0;
 		Prefix = 0;
 		
+		// Check each ScanCodeTable entry's matrix code, and set the bit in the check
+		// array corresponding to the matrix code
 		while(Prefix!=SCAN_CODE_TERMINATE) 
 		{
 			Prefix 		= pgm_read_byte(&Table[Offset++]);
@@ -291,28 +301,26 @@ void check_matrix(void)
 			MatrixCode	= pgm_read_byte(&Table[Offset++]);
 	
 			if(Prefix!=SCAN_CODE_TERMINATE)
-			{
 				Check[GetRow(MatrixCode)] |= (1 << GetCol(MatrixCode));
-			}
 		}
 	}
-	
-	log0("ColNo    ");
+
+	// Display column titles
+	logv0("ColNo    ");
 	for(Col = MAX_COL; Col>-1; Col--)
-		log0(" %02X",Col);
+		logv0(" %02X",Col);
 	
-	log0("\n");
+	logv0("\n");
 	
+	// Extract each bit from the chek array and display it.
 	for(Row = 0; Row < MAX_ROW; Row++)
 	{
-		log0("Row[%d]: ",Row);
+		logv0("Row[%d]: ",Row);
 		for(Col = MAX_COL; Col>-1; Col--)
 		{
-			if(Check[Row] & (1<<Col))
-				log0("  1");
-			else 
-				log0("  0");
+			OutCh=(Check[Row] & (1<<Col)) ? '1' : '0';
+			logv0("  %c",OutCh);
 		}
-		log0("\n");
+		logv0("\n");
 	}
 }

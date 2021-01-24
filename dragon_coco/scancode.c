@@ -264,22 +264,22 @@ SCAN_CODE_TERMINATE, 	SCAN_CODE_TERMINATE, 	SCAN_CODE_TERMINATE
 
 void ScancodeInit(matrix_t *ToInit)
 {
-	log0("ScancodeInit() ");
+	logv0("ScancodeInit() ");
 	if(IsDragon)
 	{
 		ToInit->ScancodeTable=(ptable_t)&ScancodeTableDragon;
 		ToInit->ScancodeShiftTable=(ptable_t)&ScancodeShiftTableDragon;
 		ToInit->matrix_shift=DRAGON_KEY_SHIFT;
-		log0(" Dragon ");
+		logv0(" Dragon ");
 	}
 	else
 	{
 		ToInit->ScancodeTable=(ptable_t)&ScancodeTableCoCo;
 		ToInit->ScancodeShiftTable=(ptable_t)&ScancodeShiftTableCoCo;
 		ToInit->matrix_shift=COCO_KEY_SHIFT;
-		log0(" CoCo ");
+		logv0(" CoCo ");
 	}	
 	
 	ToInit->matrix_reset=RESET_KEY;
-	log0("keyboard selected.\n");
+	logv0("keyboard selected.\n");
 }

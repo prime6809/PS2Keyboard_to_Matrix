@@ -10,7 +10,7 @@
 
 void GlobalIOInit(void)
 {
-	log0("GlobalIOInit()\n");
+	logv0("GlobalIOInit()\n");
 	
 	// Init DIPs/Jumpers, inputs with pullups
 	DIPDDR 	&= ~DIPMASK;

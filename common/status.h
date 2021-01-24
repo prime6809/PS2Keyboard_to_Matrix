@@ -23,9 +23,18 @@
 #ifdef SERIAL_STATUS
 #define log0(format,...) fprintf_P(&ser0stream,PSTR(format),##__VA_ARGS__) 
 #define log1(format,...) fprintf_P(&ser1stream,PSTR(format),##__VA_ARGS__)
+#define logf0(flag,format,...) if (flag) log0(format,##__VA_ARGS__)
+#define logf1(flag,format,...) if (flag) log0(format,##__VA_ARGS__)
+#define logv0(format,...) logf0(STATUS_VERBOSE,format,##__VA_ARGS__)
+#define logv1(format,...) logf1(STATUS_VERBOSE,format,##__VA_ARGS__)
+
 #else
 #define log0(format,...) 
 #define log1(format,...) 
+#define logf0(flag,format,...) 
+#define logf1(flag,format,...) 
+#define logv0(format,...) 
+#define logv1(format,...) 
 #endif
 
 //
@@ -34,6 +43,8 @@
 
 extern FILE ser0stream;
 extern FILE ser1stream;
+
+extern uint8_t	STATUS_VERBOSE;
 
 /* Default baud rate if 0 passed to Serial_Init */
   
@@ -71,7 +82,8 @@ char Serial_RxByte1(void);
 uint8_t Serial_ByteRecieved1(void);
 
 void Serial_Init(const uint32_t BaudRate0,
-				 const uint32_t BaudRate1);
+				 const uint32_t BaudRate1,
+				 const uint8_t Verbose);
 
 void cls(uint8_t	Port);
 
