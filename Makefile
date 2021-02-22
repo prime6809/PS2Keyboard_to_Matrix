@@ -273,7 +273,7 @@ LDFLAGS += $(PRINTF_LIB) $(SCANF_LIB) $(MATH_LIB)
 AVRDUDE_PROGRAMMER = avrispv2
 
 # com1 = serial port. Use lpt1 to connect to parallel port.
-AVRDUDE_PORT = com12
+AVRDUDE_PORT = com7
 
 AVRDUDE_WRITE_FLASH = -U flash:w:$(TARGET)/$(TARGET).hex
 #AVRDUDE_WRITE_EEPROM = -U eeprom:w:$(TARGET)/$(TARGET).eep

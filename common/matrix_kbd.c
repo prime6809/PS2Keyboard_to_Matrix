@@ -38,6 +38,7 @@
 #include "ps2kbd.h"
 #include "scancode.h"
 #include "status.h"
+#include "globalio.h"
 #include "io.h"
 
 static uint8_t	LastScanCode;

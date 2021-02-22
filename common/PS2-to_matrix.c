@@ -1,6 +1,6 @@
 /*
 	PS2-to-matrix	: 
-		Keyboard module for translatin a PS2 keyboard to a matrix suitable
+		Keyboard module for translating a PS2 keyboard to a matrix suitable
 		for many retro computers.
 
 	2009-07-28, 2020-12-28, P.Harvey-Smith.
@@ -110,8 +110,6 @@ int main(void)
 	logv0(TARGET_NAME" PS/2 Keyboard interface V1.0\n");
 	logv0("2021-01-06 Ramoth Software.\n");
 	
-	logv0("DIP3 is set!\n");
-	
 	init_vars();
 	
 	logv0("PS/2 keyboard init\n");
@@ -132,7 +130,7 @@ int main(void)
 
 	while(1)
 	{
-		matrix_check_output();
+		matrix_check_output();	// Check if PS/2 scancodes waiting to be output to matrix.
 		MainLoopPoll();			// Poll the I/O driver for work.
 		ps2_poll_leds();		// update keyboard LEDS if needed
 	}
