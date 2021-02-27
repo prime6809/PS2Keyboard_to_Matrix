@@ -40,7 +40,7 @@
 #----------------------------------------------------------------------------
 
 # MCU name
-MCU = atmega644
+MCU = atmega324a
 
 # Processor frequency.
 #     This will define a symbol, F_CPU, in all source code files equal to the 

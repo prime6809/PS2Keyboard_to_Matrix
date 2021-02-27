@@ -19,7 +19,9 @@ void InitIO(void)
 
 void ResetMachine(void)
 {
+	logv0("Resetting.....\n");
 	ResetTargetMachine();
+	logv0("Done\n");	
 }
 
 // Called from main loop.
