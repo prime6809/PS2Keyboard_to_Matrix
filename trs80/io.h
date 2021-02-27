@@ -9,9 +9,10 @@
 
 #include "globalio.h"
 
-#define	ISSWAP_BIT		0
-#define ISSWAP_MASK		(1<<ISSWAP_BIT)
+#define MODEL_MASK		DIPS0
+#define SWAP_MASK		DIPS1
 
+#define IsModel3		(DIPIsSet(MODEL_MASK))
 #define IsSWAP			(DIPIsSet(ISSWAP_MASK))
 
 void InitIO(void);

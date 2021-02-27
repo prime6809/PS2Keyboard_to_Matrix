@@ -73,7 +73,7 @@
 #define ClearTargetReset()	do { RESET_DDR &= ~RESET_MASK; RESET_PORT |= RESET_MASK; } while (0)
 
 // reset the target
-#define ResetTargetMachine()	do { AssertTargetReset(); _delay_ms(1000); ClearTargetReset(); } while (0)
+#define ResetTargetMachine()	do { AssertTargetReset(); _delay_ms(50); ClearTargetReset(); } while (0)
 
 // initialize global IO.
 void GlobalIOInit(void);
