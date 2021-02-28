@@ -3,112 +3,121 @@ Pinout of Board connectors
 CNCOL07, target matrix columns, target reset.
 
 Pin #		Purpose
-1			Y0-COL0
-2			Y1-COL1
-3			Y2-COL2
-4			Y3-COL3
-5			Y4-COL4
-6			Y5-COL5
-7			Y6-COL6
-8			Y7-COL7
-9			Y8-COL8, AVR PD5
-10			Target reset, active low
+1		Y0-COL0
+2		Y1-COL1
+3		Y2-COL2
+4		Y3-COL3
+5		Y4-COL4
+6		Y5-COL5
+7		Y6-COL6
+8		Y7-COL7
+9		Y8-COL8, AVR PD5
+10		Target reset, active low
 
 
 CNROW09, Target rows part 1
 
 Pin #		Purpose
-1			X0-ROW0
-2			X1-ROW1
-3			X2-ROW2
-4			X3-ROW3
-5			X4-ROW4
-6			X5-ROW5
-7			X12-ROW6
-8			X13-ROW7
-9			X6-ROW8
-10			X7-ROW9
+1		X0-ROW0
+2		X1-ROW1
+3		X2-ROW2
+4		X3-ROW3
+5		X4-ROW4
+6		X5-ROW5
+7		X12-ROW6
+8		X13-ROW7
+9		X6-ROW8
+10		X7-ROW9
 
 
 CNROWAF, Target rows part 2
 
 Pin #		Purpose
-1			X8-ROW10
-2			X9-ROW11
-3			X10-ROW12
-4			X11-ROW13
-5			X14-ROW14
-6			X15-ROW15
-7			AVR PB3
-8 			AVR PB4
-9			AVR PC5
-10			AVR PC6
+1		X8-ROW10
+2		X9-ROW11
+3		X10-ROW12
+4		X11-ROW13
+5		X14-ROW14
+6		X15-ROW15
+7		AVR PB3
+8		AVR PB4
+9		AVR PC5
+10		AVR PC6
 
 
 CN7, Joystick (not yet implemented).
 
 Pin #		Purpose
-1			JS-Up,		AVR PC0
-2			JS-Fire,	AVR PC4		
-3			JS-Down,	AVR PC1	
-4			N/C
-5			JS-Left,	AVR PC2
-6			GND
-7			JS-Right,	AVR PC3
-8			N/C
-9			N/C
-10			N/C
+1		JS-Up,		AVR PC0
+2		JS-Fire,	AVR PC4		
+3		JS-Down,	AVR PC1	
+4		N/C
+5		JS-Left,	AVR PC2
+6		GND
+7		JS-Right,	AVR PC3
+8		N/C
+9		N/C
+10		N/C
 
 
 CN2, 5V TTL level serial port, for debugging.
 
-1			+5V out
-2			Receive data
-3			Transmit data
-4			Ground
+1		+5V out
+2		Receive data
+3		Transmit data
+4		Ground
 
 
 CN1, PS/2 Keyboard input.
 
-1			Keyboard data
-2			N/C
-3			GND
-4			+5V to keyboard
-5			Keyboard clock
-6			N/C
+1		Keyboard data
+2		N/C
+3		GND
+4		+5V to keyboard
+5		Keyboard clock
+6		N/C
 
 
 JP3, Spare AVR port B pins / Jumpers
 
-1			PB0	
-3			PB1	
-5			PB2
-7			PB3
-9			PB4
+1		PB0	JPS0 in source see globalio.h
+3		PB1	JPS1 in source see globalio.h
+5		PB2	JPS2 in source see globalio.h
+7		PB3	JPS3 in source see globalio.h
+9		PB4	JPS4 in source see globalio.h
+
+JPS0 to JPS2's function are target defined.
+
+JPS3	
+Open		Serial debugging disabled	
+Closed		Serial debugging enabled, on TTL serial port 115200, 8N1.
+
+JPS4		
+Open		Matrix dump disabled.
+Close		Matrix dump enabled on serial port, useful for spotting
+		errors in the defined matrix.
 
 All even pins GND
 
 JP2, Spare AVR Port C pins
 
-1			PC6
-2			PC5
+1		PC6
+2		PC5
 
 
 CN3, AVR ISP.
 
-1			MISO
-2			Voltage sense
-3			SCK
-4			MOSI
-5			/AVRRESET
-6			GND
+1		MISO
+2		Voltage sense
+3		SCK
+4		MOSI
+5		/AVRRESET
+6		GND
 
 CN4, Power supply input.
 
-1			VCC, +5V
-2			GND
-
-
+1		VCC, +5V
+2		GND
 
 Connections between PS2 interface and various targets.
 All assume that interface board is powered from target machine.
@@ -237,12 +246,12 @@ The following connections also need to be made.
 This allows the keyboard interface to be powered direct from the 
 Master Compact.
 Interface connector	Keyboard connector	
-GND					pin 1
+GND			pin 1
 VCC (+5V in)		pin 25
 
 These allow the Master's keyboard LEDS to be output on the PS/2 keyboard LEDS.
-AVR PC5				pin 23
-AVR PC6				pin 24
+AVR PC5			pin 23
+AVR PC6			pin 24
 
 A customized board is available in the hardware section.
 
@@ -372,6 +381,9 @@ the middle and output pin of the 7805 5V regulator which is near the
 keyboard connector. Do **NOT** try using the keyboard LED connector as 
 this has a 470R resistor inline and cannot provide enough power.
 
+This matrix should also work for the Plus 4 and C116, but has currently 
+not been tried on either.
+
 ===================[ Dragon 32/64/Alpha ]===========================
 Should also work on Tandy CoCo.
 
@@ -409,7 +421,7 @@ AVR PC5		N/C
 AVR PC6		N/C
 
 If using Dragon/CoCo ROM switching where Dragon is low, CoCo is high.
-Connect switch input to AVR PB0.
+Connect switch input to AVR PB0 (right hand pin of S0).
 You will need to find a place to take the +5V and GND from the motherboard.
 e.g. The power pins of one of the LSTTL chips or the ROMS.
 
@@ -497,6 +509,92 @@ AVR PB4		N/C
 AVR PC5		N/C
 AVR PC6		N/C
 
+===============[ Tandy TRS80 Model 3 or Model 4 ]====================
+
+For this target : 
+
+Jumper S0 selects between Model 3 and Model 4
+Jumper S1 selects between normal or swapped connections (see below)
+Note on the Model 3 (and possibly Model 4)motherboard, the pins on 
+the keyboard connectror are numbered the oposite way from normal, 
+so even pins on the left, odd pins on the right!
+
+Normal connections (S1 open) :
+
+Y0-COL0		P9
+Y1-COL1		P10
+Y2-COL2		P11	
+Y3-COL3		P12
+Y4-COL4		P13
+Y5-COL5		P14
+Y6-COL6		P15
+Y7-COL7		P16
+Y8-COL8		N/C
+RESET		P19
+
+X0-ROW0		P1
+X1-ROW1		P2		
+X2-ROW2		P3
+X3-ROW3		P4
+X4-ROW4		P5
+X5-ROW5		P6
+X12-ROW6	P7
+X13-ROW7	P8
+X6-ROW8		N/C
+X7-ROW9		N/C
+
+X8-ROW10	N/C
+X9-ROW11	N/C
+X10-ROW12	N/C
+X11-ROW13	N/C
+X14-ROW14	N/C
+X15-ROW15	N/C
+AVR PB3		N/C
+AVR PB4		N/C
+AVR PC5		N/C
+AVR PC6		N/C
+
+Swapped connections (S1 closed) :
+
+Y0-COL0		P10
+Y1-COL1		P9
+Y2-COL2		P12	
+Y3-COL3		P11
+Y4-COL4		P14
+Y5-COL5		P13
+Y6-COL6		P16
+Y7-COL7		P15
+Y8-COL8		N/C
+RESET		P19
+
+X0-ROW0		P2
+X1-ROW1		P1		
+X2-ROW2		P4
+X3-ROW3		P3
+X4-ROW4		P6
+X5-ROW5		P5
+X12-ROW6	P8
+X13-ROW7	P7
+X6-ROW8		N/C
+X7-ROW9		N/C
+
+X8-ROW10	N/C
+X9-ROW11	N/C
+X10-ROW12	N/C
+X11-ROW13	N/C
+X14-ROW14	N/C
+X15-ROW15	N/C
+AVR PB3		N/C
+AVR PB4		N/C
+AVR PC5		N/C
+AVR PC6		N/C
+
+With swapped connections you can use a 20 way IDC connector at the TRS80 end and
+2x 10 way IDC connectors at the interface end. If you crimp in a 20 way cable at
+the TRS80 end the following crimps need to be made at the interface end.
+Pins 1..8 of the cable need to go to pins 1..8 of CNROW09
+Pins 9..16 of the cable need to go to pins 1..8 of CNCOL07
+Pin 19 of the cable needs to go to pin 10 of CNCOL07 
 
 ===============[ Template. ]====================
 
