@@ -1,0 +1,411 @@
+   1               		.file	"scancode.c"
+   2               	__SP_H__ = 0x3e
+   3               	__SP_L__ = 0x3d
+   4               	__SREG__ = 0x3f
+   5               	__tmp_reg__ = 0
+   6               	__zero_reg__ = 1
+   7               		.text
+   8               	.Ltext0:
+   9               		.cfi_sections	.debug_frame
+  10               	.global	ScancodeInit
+  12               	ScancodeInit:
+  13               	.LFB2:
+  14               		.file 1 "dragon_beta/scancode.c"
+   1:dragon_beta/scancode.c **** /*
+   2:dragon_beta/scancode.c ****   PC Scan Code to Dragon Column/Row translation table.
+   3:dragon_beta/scancode.c **** 
+   4:dragon_beta/scancode.c ****   Encoded as follows, 
+   5:dragon_beta/scancode.c ****   Each record consists of 3 bytes :-
+   6:dragon_beta/scancode.c ****  
+   7:dragon_beta/scancode.c ****   1) The prefix code, either SCAN_CODE_NO_PREFIX, or SCAN_CODE_ESCAPE
+   8:dragon_beta/scancode.c ****   2) The PC scan code to check for, from scancode.h
+   9:dragon_beta/scancode.c ****   3) The target machine key it represents, from constant table (scancode.h).
+  10:dragon_beta/scancode.c **** 
+  11:dragon_beta/scancode.c ****   This table should ONLY contain mappings for which there is a valid
+  12:dragon_beta/scancode.c ****   output key.
+  13:dragon_beta/scancode.c **** 
+  14:dragon_beta/scancode.c ****   Working out this table took far too long !!!!
+  15:dragon_beta/scancode.c **** */
+  16:dragon_beta/scancode.c **** 
+  17:dragon_beta/scancode.c **** #include "scancode.h"
+  18:dragon_beta/scancode.c **** #include "io.h"
+  19:dragon_beta/scancode.c **** #include "status.h"
+  20:dragon_beta/scancode.c **** 
+  21:dragon_beta/scancode.c **** const uint8_t ScancodeTableDragonBeta[] PROGMEM = {
+  22:dragon_beta/scancode.c **** // Prefix code			Scancode				Keycode
+  23:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_A,			BETA_KEY_A,
+  24:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_B,			BETA_KEY_B,
+  25:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_C,			BETA_KEY_C,
+  26:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_D,			BETA_KEY_D,
+  27:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_E,			BETA_KEY_E,
+  28:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_F,			BETA_KEY_F,
+  29:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_G,			BETA_KEY_G,
+  30:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_H,			BETA_KEY_H,
+  31:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_I,			BETA_KEY_I,
+  32:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_J,			BETA_KEY_J,
+  33:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_K,			BETA_KEY_K,
+  34:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_L,			BETA_KEY_L,
+  35:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_M,			BETA_KEY_M,
+  36:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_N,			BETA_KEY_N,
+  37:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_O,			BETA_KEY_O,
+  38:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_P,			BETA_KEY_P,
+  39:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_Q,			BETA_KEY_Q,
+  40:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_R,			BETA_KEY_R,
+  41:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_S,			BETA_KEY_S,
+  42:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_T,			BETA_KEY_T,
+  43:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_U,			BETA_KEY_U,
+  44:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_V,			BETA_KEY_V,
+  45:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_W,			BETA_KEY_W,
+  46:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_X,			BETA_KEY_X,
+  47:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_Y,			BETA_KEY_Y,
+  48:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_Z,			BETA_KEY_Z,
+  49:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_0,			BETA_KEY_0,
+  50:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_1,			BETA_KEY_1,
+  51:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_2,			BETA_KEY_2,
+  52:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_3,			BETA_KEY_3,
+  53:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_4,			BETA_KEY_4,
+  54:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_5,			BETA_KEY_5,
+  55:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_6,			BETA_KEY_6,
+  56:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_7,			BETA_KEY_7,
+  57:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_8,			BETA_KEY_8,
+  58:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_9,			BETA_KEY_9,
+  59:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_SPACE,		BETA_KEY_SPACE,
+  60:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_POINT,		BETA_KEY_POINT,
+  61:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_COMMA,		BETA_KEY_COMMA,
+  62:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_SLASH,		BETA_KEY_SLASH,
+  63:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_SEMICOLON,	BETA_KEY_COLON,
+  64:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_RSQBRACK,		BETA_KEY_RSQBRACK,
+  65:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_LSQBRACK,		BETA_KEY_LSQBRACK,
+  66:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_QUOTE,		BETA_KEY_AT,
+  67:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_BSLASH,		BETA_KEY_BSLASH,
+  68:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_MINUS,		BETA_KEY_MINUS,
+  69:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_EQUAL,		BETA_KEY_COLON,
+  70:dragon_beta/scancode.c **** //SCAN_CODE_NO_PREFIX,	SCAN_CODE_TILDE,		BETA_KEY_CLARET,
+  71:dragon_beta/scancode.c **** 
+  72:dragon_beta/scancode.c **** //SCAN_CODE_NO_PREFIX,	SCAN_CODE_BACKSPACE,	BETA_KEY_DELETE,
+  73:dragon_beta/scancode.c **** 
+  74:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_LSHIFT,		BETA_KEY_SHIFT,
+  75:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_LALT,			BETA_KEY_FUNC,
+  76:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_RSHIFT,		BETA_KEY_SHIFT,
+  77:dragon_beta/scancode.c **** SCAN_CODE_ESCAPE,		SCAN_CODE_LGUI,			BETA_KEY_SHIFT,
+  78:dragon_beta/scancode.c **** 
+  79:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_LCTRL,		BETA_KEY_CTRL,
+  80:dragon_beta/scancode.c **** SCAN_CODE_ESCAPE,		SCAN_CODE_RCTRL,		BETA_KEY_CTRL,
+  81:dragon_beta/scancode.c **** 
+  82:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_ENTER,		BETA_KEY_ENTER,
+  83:dragon_beta/scancode.c **** SCAN_CODE_ESCAPE,		SCAN_CODE_KPENTER,		BETA_KEY_ENTER,
+  84:dragon_beta/scancode.c **** 
+  85:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_ESC,			BETA_KEY_BREAK,
+  86:dragon_beta/scancode.c **** SCAN_CODE_ESCAPE,		SCAN_CODE_PAUSE,		BETA_KEY_BREAK,
+  87:dragon_beta/scancode.c **** 
+  88:dragon_beta/scancode.c **** SCAN_CODE_NO_PREFIX,	SCAN_CODE_CAPSLOCK,		BETA_KEY_CAPS,
+  89:dragon_beta/scancode.c **** 
+  90:dragon_beta/scancode.c **** SCAN_CODE_TERMINATE, 	SCAN_CODE_TERMINATE, 	SCAN_CODE_TERMINATE
+  91:dragon_beta/scancode.c **** };
+  92:dragon_beta/scancode.c **** 
+  93:dragon_beta/scancode.c **** 
+  94:dragon_beta/scancode.c **** /*
+  95:dragon_beta/scancode.c ****   The shift key table, this has the same format as the above standard 
+  96:dragon_beta/scancode.c ****   key table, however when one of these keys is pressed, the output shift 
+  97:dragon_beta/scancode.c ****   key will also be pressed before the key, and released after the key.
+  98:dragon_beta/scancode.c **** 	
+  99:dragon_beta/scancode.c ****   This allows as single PC key to translate to a SHIFT-KEY combination 
+ 100:dragon_beta/scancode.c ****   on the output matrix. 
+ 101:dragon_beta/scancode.c ****   
+ 102:dragon_beta/scancode.c ****   A similar method could be used for other modifier keys.
+ 103:dragon_beta/scancode.c **** */
+ 104:dragon_beta/scancode.c **** 
+ 105:dragon_beta/scancode.c **** const uint8_t ScancodeShiftTableDragonBeta[] PROGMEM = {
+ 106:dragon_beta/scancode.c **** // Prefix code			Scancode				Keycode
+ 107:dragon_beta/scancode.c **** 
+ 108:dragon_beta/scancode.c **** SCAN_CODE_TERMINATE, 	SCAN_CODE_TERMINATE, 	SCAN_CODE_TERMINATE
+ 109:dragon_beta/scancode.c **** };
+ 110:dragon_beta/scancode.c **** 
+ 111:dragon_beta/scancode.c **** 
+ 112:dragon_beta/scancode.c **** void ScancodeInit(matrix_t *ToInit)
+ 113:dragon_beta/scancode.c **** {
+  15               		.loc 1 113 0
+  16               		.cfi_startproc
+  17               	.LVL0:
+  18 0000 CF93      		push r28
+  19               	.LCFI0:
+  20               		.cfi_def_cfa_offset 3
+  21               		.cfi_offset 28, -2
+  22 0002 DF93      		push r29
+  23               	.LCFI1:
+  24               		.cfi_def_cfa_offset 4
+  25               		.cfi_offset 29, -3
+  26               	/* prologue: function */
+  27               	/* frame size = 0 */
+  28               	/* stack size = 2 */
+  29               	.L__stack_usage = 2
+  30 0004 EC01      		movw r28,r24
+ 114:dragon_beta/scancode.c **** 	log0("ScancodeInit()\n");
+  31               		.loc 1 114 0
+  32 0006 80E0      		ldi r24,lo8(__c.2032)
+  33 0008 90E0      		ldi r25,hi8(__c.2032)
+  34               	.LVL1:
+  35 000a 9F93      		push r25
+  36               	.LCFI2:
+  37               		.cfi_def_cfa_offset 5
+  38 000c 8F93      		push r24
+  39               	.LCFI3:
+  40               		.cfi_def_cfa_offset 6
+  41 000e 80E0      		ldi r24,lo8(ser0stream)
+  42 0010 90E0      		ldi r25,hi8(ser0stream)
+  43 0012 9F93      		push r25
+  44               	.LCFI4:
+  45               		.cfi_def_cfa_offset 7
+  46 0014 8F93      		push r24
+  47               	.LCFI5:
+  48               		.cfi_def_cfa_offset 8
+  49 0016 0E94 0000 		call fprintf_P
+  50               	.LVL2:
+ 115:dragon_beta/scancode.c **** 
+ 116:dragon_beta/scancode.c **** 	ToInit->ScancodeTable=(ptable_t)&ScancodeTableDragonBeta;
+  51               		.loc 1 116 0
+  52 001a 80E0      		ldi r24,lo8(ScancodeTableDragonBeta)
+  53 001c 90E0      		ldi r25,hi8(ScancodeTableDragonBeta)
+  54 001e 9D83      		std Y+5,r25
+  55 0020 8C83      		std Y+4,r24
+ 117:dragon_beta/scancode.c **** 	ToInit->ScancodeShiftTable=(ptable_t)&ScancodeShiftTableDragonBeta;
+  56               		.loc 1 117 0
+  57 0022 80E0      		ldi r24,lo8(ScancodeShiftTableDragonBeta)
+  58 0024 90E0      		ldi r25,hi8(ScancodeShiftTableDragonBeta)
+  59 0026 9F83      		std Y+7,r25
+  60 0028 8E83      		std Y+6,r24
+ 118:dragon_beta/scancode.c **** 	ToInit->matrix_shift=BETA_KEY_SHIFT;
+  61               		.loc 1 118 0
+  62 002a 81E0      		ldi r24,lo8(1)
+  63 002c 8887      		std Y+8,r24
+ 119:dragon_beta/scancode.c **** 	
+ 120:dragon_beta/scancode.c **** 	ToInit->matrix_reset=RESET_KEY;
+  64               		.loc 1 120 0
+  65 002e 8FEF      		ldi r24,lo8(-1)
+  66 0030 8987      		std Y+9,r24
+ 121:dragon_beta/scancode.c **** }...
+  67               		.loc 1 121 0
+  68 0032 0F90      		pop __tmp_reg__
+  69 0034 0F90      		pop __tmp_reg__
+  70 0036 0F90      		pop __tmp_reg__
+  71 0038 0F90      		pop __tmp_reg__
+  72               	.LCFI6:
+  73               		.cfi_def_cfa_offset 4
+  74               	/* epilogue start */
+  75 003a DF91      		pop r29
+  76 003c CF91      		pop r28
+  77               	.LVL3:
+  78 003e 0895      		ret
+  79               		.cfi_endproc
+  80               	.LFE2:
+  82               		.section	.progmem.data,"a",@progbits
+  85               	__c.2032:
+  86 0000 5363 616E 		.string	"ScancodeInit()\n"
+  86      636F 6465 
+  86      496E 6974 
+  86      2829 0A00 
+  87               	.global	ScancodeShiftTableDragonBeta
+  90               	ScancodeShiftTableDragonBeta:
+  91 0010 FF        		.byte	-1
+  92 0011 FF        		.byte	-1
+  93 0012 FF        		.byte	-1
+  94               	.global	ScancodeTableDragonBeta
+  97               	ScancodeTableDragonBeta:
+  98 0013 00        		.byte	0
+  99 0014 1C        		.byte	28
+ 100 0015 58        		.byte	88
+ 101 0016 00        		.byte	0
+ 102 0017 32        		.byte	50
+ 103 0018 01        		.byte	1
+ 104 0019 00        		.byte	0
+ 105 001a 21        		.byte	33
+ 106 001b 46        		.byte	70
+ 107 001c 00        		.byte	0
+ 108 001d 23        		.byte	35
+ 109 001e 54        		.byte	84
+ 110 001f 00        		.byte	0
+ 111 0020 24        		.byte	36
+ 112 0021 47        		.byte	71
+ 113 0022 00        		.byte	0
+ 114 0023 2B        		.byte	43
+ 115 0024 53        		.byte	83
+ 116 0025 00        		.byte	0
+ 117 0026 34        		.byte	52
+ 118 0027 52        		.byte	82
+ 119 0028 00        		.byte	0
+ 120 0029 33        		.byte	51
+ 121 002a 51        		.byte	81
+ 122 002b 00        		.byte	0
+ 123 002c 43        		.byte	67
+ 124 002d 21        		.byte	33
+ 125 002e 00        		.byte	0
+ 126 002f 3B        		.byte	59
+ 127 0030 11        		.byte	17
+ 128 0031 00        		.byte	0
+ 129 0032 42        		.byte	66
+ 130 0033 12        		.byte	18
+ 131 0034 00        		.byte	0
+ 132 0035 4B        		.byte	75
+ 133 0036 13        		.byte	19
+ 134 0037 00        		.byte	0
+ 135 0038 3A        		.byte	58
+ 136 0039 03        		.byte	3
+ 137 003a 00        		.byte	0
+ 138 003b 31        		.byte	49
+ 139 003c 02        		.byte	2
+ 140 003d 00        		.byte	0
+ 141 003e 44        		.byte	68
+ 142 003f 22        		.byte	34
+ 143 0040 00        		.byte	0
+ 144 0041 4D        		.byte	77
+ 145 0042 23        		.byte	35
+ 146 0043 00        		.byte	0
+ 147 0044 15        		.byte	21
+ 148 0045 49        		.byte	73
+ 149 0046 00        		.byte	0
+ 150 0047 2D        		.byte	45
+ 151 0048 45        		.byte	69
+ 152 0049 00        		.byte	0
+ 153 004a 1B        		.byte	27
+ 154 004b 55        		.byte	85
+ 155 004c 00        		.byte	0
+ 156 004d 2C        		.byte	44
+ 157 004e 43        		.byte	67
+ 158 004f 00        		.byte	0
+ 159 0050 3C        		.byte	60
+ 160 0051 41        		.byte	65
+ 161 0052 00        		.byte	0
+ 162 0053 2A        		.byte	42
+ 163 0054 44        		.byte	68
+ 164 0055 00        		.byte	0
+ 165 0056 1D        		.byte	29
+ 166 0057 48        		.byte	72
+ 167 0058 00        		.byte	0
+ 168 0059 22        		.byte	34
+ 169 005a 56        		.byte	86
+ 170 005b 00        		.byte	0
+ 171 005c 35        		.byte	53
+ 172 005d 42        		.byte	66
+ 173 005e 00        		.byte	0
+ 174 005f 1A        		.byte	26
+ 175 0060 57        		.byte	87
+ 176 0061 00        		.byte	0
+ 177 0062 45        		.byte	69
+ 178 0063 32        		.byte	50
+ 179 0064 00        		.byte	0
+ 180 0065 16        		.byte	22
+ 181 0066 68        		.byte	104
+ 182 0067 00        		.byte	0
+ 183 0068 1E        		.byte	30
+ 184 0069 67        		.byte	103
+ 185 006a 00        		.byte	0
+ 186 006b 26        		.byte	38
+ 187 006c 65        		.byte	101
+ 188 006d 00        		.byte	0
+ 189 006e 25        		.byte	37
+ 190 006f 64        		.byte	100
+ 191 0070 00        		.byte	0
+ 192 0071 2E        		.byte	46
+ 193 0072 63        		.byte	99
+ 194 0073 00        		.byte	0
+ 195 0074 36        		.byte	54
+ 196 0075 62        		.byte	98
+ 197 0076 00        		.byte	0
+ 198 0077 3D        		.byte	61
+ 199 0078 61        		.byte	97
+ 200 0079 00        		.byte	0
+ 201 007a 3E        		.byte	62
+ 202 007b 30        		.byte	48
+ 203 007c 00        		.byte	0
+ 204 007d 46        		.byte	70
+ 205 007e 31        		.byte	49
+ 206 007f 00        		.byte	0
+ 207 0080 29        		.byte	41
+ 208 0081 66        		.byte	102
+ 209 0082 00        		.byte	0
+ 210 0083 49        		.byte	73
+ 211 0084 05        		.byte	5
+ 212 0085 00        		.byte	0
+ 213 0086 41        		.byte	65
+ 214 0087 04        		.byte	4
+ 215 0088 00        		.byte	0
+ 216 0089 4A        		.byte	74
+ 217 008a 06        		.byte	6
+ 218 008b 00        		.byte	0
+ 219 008c 4C        		.byte	76
+ 220 008d 15        		.byte	21
+ 221 008e 00        		.byte	0
+ 222 008f 5B        		.byte	91
+ 223 0090 36        		.byte	54
+ 224 0091 00        		.byte	0
+ 225 0092 54        		.byte	84
+ 226 0093 35        		.byte	53
+ 227 0094 00        		.byte	0
+ 228 0095 52        		.byte	82
+ 229 0096 24        		.byte	36
+ 230 0097 00        		.byte	0
+ 231 0098 5D        		.byte	93
+ 232 0099 25        		.byte	37
+ 233 009a 00        		.byte	0
+ 234 009b 4E        		.byte	78
+ 235 009c 33        		.byte	51
+ 236 009d 00        		.byte	0
+ 237 009e 55        		.byte	85
+ 238 009f 15        		.byte	21
+ 239 00a0 00        		.byte	0
+ 240 00a1 12        		.byte	18
+ 241 00a2 01        		.byte	1
+ 242 00a3 00        		.byte	0
+ 243 00a4 11        		.byte	17
+ 244 00a5 20        		.byte	32
+ 245 00a6 00        		.byte	0
+ 246 00a7 59        		.byte	89
+ 247 00a8 01        		.byte	1
+ 248 00a9 E0        		.byte	-32
+ 249 00aa 1F        		.byte	31
+ 250 00ab 01        		.byte	1
+ 251 00ac 00        		.byte	0
+ 252 00ad 14        		.byte	20
+ 253 00ae 40        		.byte	64
+ 254 00af E0        		.byte	-32
+ 255 00b0 14        		.byte	20
+ 256 00b1 40        		.byte	64
+ 257 00b2 00        		.byte	0
+ 258 00b3 5A        		.byte	90
+ 259 00b4 16        		.byte	22
+ 260 00b5 E0        		.byte	-32
+ 261 00b6 5A        		.byte	90
+ 262 00b7 16        		.byte	22
+ 263 00b8 00        		.byte	0
+ 264 00b9 76        		.byte	118
+ 265 00ba 60        		.byte	96
+ 266 00bb E0        		.byte	-32
+ 267 00bc 7E        		.byte	126
+ 268 00bd 60        		.byte	96
+ 269 00be 00        		.byte	0
+ 270 00bf 58        		.byte	88
+ 271 00c0 50        		.byte	80
+ 272 00c1 FF        		.byte	-1
+ 273 00c2 FF        		.byte	-1
+ 274 00c3 FF        		.byte	-1
+ 275               		.text
+ 276               	.Letext0:
+ 277               		.file 2 "d:\\winavr\\avr\\include\\stdint.h"
+ 278               		.file 3 "./common/matrix_kbd.h"
+ 279               		.file 4 "d:\\winavr\\avr\\include\\stdio.h"
+ 280               		.file 5 "./common/status.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 scancode.c
+D:\cygwin64\tmp\ccdWW2Zf.s:2      *ABS*:0000003e __SP_H__
+D:\cygwin64\tmp\ccdWW2Zf.s:3      *ABS*:0000003d __SP_L__
+D:\cygwin64\tmp\ccdWW2Zf.s:4      *ABS*:0000003f __SREG__
+D:\cygwin64\tmp\ccdWW2Zf.s:5      *ABS*:00000000 __tmp_reg__
+D:\cygwin64\tmp\ccdWW2Zf.s:6      *ABS*:00000001 __zero_reg__
+D:\cygwin64\tmp\ccdWW2Zf.s:12     .text:00000000 ScancodeInit
+D:\cygwin64\tmp\ccdWW2Zf.s:85     .progmem.data:00000000 __c.2032
+D:\cygwin64\tmp\ccdWW2Zf.s:97     .progmem.data:00000013 ScancodeTableDragonBeta
+D:\cygwin64\tmp\ccdWW2Zf.s:90     .progmem.data:00000010 ScancodeShiftTableDragonBeta
+
+UNDEFINED SYMBOLS
+ser0stream
+fprintf_P

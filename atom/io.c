@@ -16,6 +16,7 @@
 void InitIO(void)
 {
 	AtomConfigRept();
+	AtomClearRept();
 }
 
 void ResetMachine(void)
