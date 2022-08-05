@@ -2,7 +2,7 @@ Building the source code.
 
 The source to the PS/2 interface is meant to be built from a command line 
 shell. This can be the native shell under Linux or MacOS, or something like 
-Sygwin under Windows. Windows Services for Linux may also work but I have not
+Cygwin under Windows. Windows Services for Linux may also work but I have not
 tested this.
 
 You will also need the AVR command line tools, these can be downloaded from 

@@ -264,9 +264,15 @@ void matrix_check_output(void)
 // Display a representation of the matrix codes that are present in the
 // scancode to matrix tables. This can be used to spot gaps in the matrix
 // where no PS/2 code encodes to that matrix position.
+
+#define TITLE_LEN	128
+
 void check_matrix(void)
 {
 	uint16_t	Check[MAX_ROW+1];
+	uint8_t		Codes[16][8];
+	uint8_t		SHCodes[16][8];
+	char		Title[TITLE_LEN];
 	int8_t		Row;
 	int8_t		Col;
 	uint16_t	Offset 	= 0;
@@ -279,6 +285,9 @@ void check_matrix(void)
 
 	// Clear array to hold matrix code presence flags
 	memset(Check,0x00,sizeof(Check));
+	memset(Codes,0x00,sizeof(Codes));
+	memset(SHCodes,0x00,sizeof(SHCodes));
+	
 
 	// Make a pass over both the ScanCode table and the ShiftScan code table
 	for(Pass=0 ; Pass < 1; Pass++)
@@ -303,15 +312,21 @@ void check_matrix(void)
 	
 			if(Prefix!=SCAN_CODE_TERMINATE)
 				Check[GetRow(MatrixCode)] |= (1 << GetCol(MatrixCode));
+				
+			if(0 == Pass)
+				Codes[GetCol(MatrixCode)][GetRow(MatrixCode)]=Code;
+			else
+				SHCodes[GetCol(MatrixCode)][GetRow(MatrixCode)]=Code;	
 		}
 	}
 
 	// Display column titles
-	logv0("ColNo    ");
+	snprintf(Title,TITLE_LEN,"ColNo    ");
+
 	for(Col = MAX_COL; Col>-1; Col--)
-		logv0(" %02X",Col);
+		snprintf(Title,TITLE_LEN,"%s %02X",Title,Col);
 	
-	logv0("\n");
+	logv0("%s\n",Title);
 	
 	// Extract each bit from the chek array and display it.
 	for(Row = 0; Row < MAX_ROW; Row++)
@@ -321,6 +336,30 @@ void check_matrix(void)
 		{
 			OutCh=(Check[Row] & (1<<Col)) ? '1' : '0';
 			logv0("  %c",OutCh);
+		}
+		logv0("\n");
+	}
+	
+	// Display scancodes of unshifted table.
+	logv0("\nUnshifted table\n\n%s\n",Title);
+	for(Row = 0; Row < MAX_ROW; Row++)
+	{
+		logv0("Row[%d]:  ",Row);
+		for(Col = MAX_COL; Col>-1; Col--)
+		{
+			logv0(" %02X",Codes[Col][Row]);
+		}
+		logv0("\n");
+	}
+	
+	// Display scancodes of unshifted table.
+	logv0("\nShifted table\n\n%s\n",Title);
+	for(Row = 0; Row < MAX_ROW; Row++)
+	{
+		logv0("Row[%d]:  ",Row);
+		for(Col = MAX_COL; Col>-1; Col--)
+		{
+			logv0(" %02X",SHCodes[Col][Row]);
 		}
 		logv0("\n");
 	}

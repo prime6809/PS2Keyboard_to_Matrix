@@ -14,7 +14,7 @@
 #include <avr/interrupt.h>
 #include <stdio.h>
 #include <ctype.h>
-#include "terminalcodes.h"
+#include "TerminalCodes.h"
 #include "status.h"
 
 #ifdef SERIAL_STATUS

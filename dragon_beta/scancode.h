@@ -1,7 +1,7 @@
 /*
- Scancode table for the Dragon 32/64/Alpha and Tandy CoCo 1/2/3 keyboard interface. 
+ Scancode table for the Dragon Beta keyboard interface. 
 
- The Dragon/CoCo keyboard data is then output to a Zarlink MT8816 8x16 
+ The Dragon Beta keyboard data is then output to a Zarlink MT8816 8x16 
  crosspoint switch.
 
  The output of the crosspoint switch is connected to the matrix 
@@ -23,7 +23,7 @@ From the source of the screen driver.
 8	FCB	'0'+N,'8'+N,'5'+N,'2'+N,'w'  ,'a'  ,'1'
 9	FCB	'#'+N,'9'+N,'6'+N,'3'+N,'q'  ,$09  ,'.'+N
 
-Fot the following key definition constants, the high nibble and 0x70 represent the 
+For the following key definition constants, the high nibble and 0x70 represent the 
 ROW of the pressed key, and the low nibble represents the COLUMN. Bit 7 is ignored, 
 as this is used by the matrix handling code to flag a key pressed or released.
 */
@@ -80,7 +80,7 @@ as this is used by the matrix handling code to flag a key pressed or released.
 
 #define BETA_KEY_FUNC		0x20
 #define BETA_KEY_CTRL		0x40
-#define BETA_KEY_SHIFT		0x01
+#define BETA_KEY_SHIFT		0x00
 
 #define BETA_KEY_CAPS		0x50
 
@@ -108,13 +108,13 @@ as this is used by the matrix handling code to flag a key pressed or released.
 
 #define BETA_KEY_KPHASH		0x09
 #define BETA_KEY_KPSTAR		0x07
-#define BETA_KEY_KPDP		0x69
+#define BETA_KEY_KPPOINT	0x69
 
 #define BETA_KEY_COMMA		0x04
 #define BETA_KEY_POINT		0x05
 #define BETA_KEY_SLASH		0x06
 
-#define BETA_KEY_SEMI		0x14
+#define BETA_KEY_SEMICOLON	0x14
 #define BETA_KEY_COLON		0x15
 
 #define BETA_KEY_MINUS		0x33
