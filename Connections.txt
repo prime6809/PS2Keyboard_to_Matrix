@@ -596,6 +596,48 @@ Pins 1..8 of the cable need to go to pins 1..8 of CNROW09
 Pins 9..16 of the cable need to go to pins 1..8 of CNCOL07
 Pin 19 of the cable needs to go to pin 10 of CNCOL07 
 
+
+===============[ Amstrad CPC-6128 ]====================
+
+The CPC-6128 has a pair of 10 pin connectors for the keyboard (CP101 and CP102).
+The PCB silk screen labels pins 1 and 11 on each of these. Note pin 1 (P1) is
+NOT connected.
+
+Y0-COL0		P2
+Y1-COL1		P3
+Y2-COL2		P4	
+Y3-COL3		P5
+Y4-COL4		P6
+Y5-COL5		P7
+Y6-COL6		P7
+Y7-COL7		P9
+Y8-COL8		P10
+RESET		N/C
+
+X0-ROW0		P11
+X1-ROW1		P12		
+X2-ROW2		P13
+X3-ROW3		P14
+X4-ROW4		P15
+X5-ROW5		P16
+X12-ROW6	P17
+X13-ROW7	P18
+X6-ROW8		P19
+X7-ROW9		P20
+
+X8-ROW10	N/C
+X9-ROW11	N/C
+X10-ROW12	N/C
+X11-ROW13	N/C
+X14-ROW14	N/C
+X15-ROW15	N/C
+AVR PB3         N/C
+AVR PB4         N/C
+AVR PC5         N/C
+AVR PC6         N/C
+
+
+
 ===============[ Template. ]====================
 
 
