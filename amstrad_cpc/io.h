@@ -9,13 +9,7 @@
 
 #include "globalio.h"
 
-#define	ISTED_BIT		0
-#define ISTED_MASK		(1<<ISTED_BIT)
-
-#define IsTED			(DIPIsSet(ISTED_MASK))
-
 void InitIO(void);
 void ResetMachine(void);
-void TestLEDS(void);
 void MainLoopPoll(void);
 #endif
