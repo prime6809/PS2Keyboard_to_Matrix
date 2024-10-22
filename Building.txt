@@ -91,4 +91,5 @@ electron		Acorn electron.
 trs80			Tandy TRS80 model 3/4 (would require additional hardware for model 1).
 zx81			Sinclair ZX80/ZX81.
 spectrum		Sinclair ZX Spectrum 16/48/+/+128.
-
+amstrad_cpc             Amstrad CPC 6128
+apple_IIc               Apple IIc
