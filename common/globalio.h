@@ -55,7 +55,7 @@
 #define ReadJS()	(~JSPIN & JSINMASK)
 #define ReadAUX()	(JSPIN & AUXMASK)
 
-#define JSLEDOn()	(JSPORT &= JSPROGLED)
+#define JSLEDOn()	(JSPORT &= (~JSPROGLED))
 #define JSLEDOff()	(JSPORT |= JSPROGLED)
 
 // Reset line for target machine.
